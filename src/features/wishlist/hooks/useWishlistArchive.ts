@@ -13,6 +13,7 @@ export const useWishlistArchive = () => {
   const replace = useWishlistStore((s) => s.replace)
   const remove = useWishlistStore((s) => s.remove)
   const [toast, setToast] = useState<ToastState | null>(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const dismissToast = useCallback(() => setToast(null), [])
 
@@ -29,6 +30,7 @@ export const useWishlistArchive = () => {
   )
 
   const activeCount = allItems.filter((item) => !item.decision).length
+  const pendingItem = items.find((item) => item.id === pendingDeleteId) ?? null
 
   const restoreItem = (id: string) => {
     const snapshot = items.find((item) => item.id === id)
@@ -42,9 +44,13 @@ export const useWishlistArchive = () => {
     })
   }
 
-  const deleteItem = (id: string) => {
+  const requestDelete = (id: string) => setPendingDeleteId(id)
+  const cancelDelete = () => setPendingDeleteId(null)
+
+  const confirmDelete = (id: string) => {
     // TODO: ganti dengan DELETE ke BE (permanen)
     remove(id)
+    setPendingDeleteId(null)
   }
 
   return {
@@ -53,7 +59,10 @@ export const useWishlistArchive = () => {
     totalHeld: getTotalHeld(items),
     toast,
     dismissToast,
+    pendingItem,
     restoreItem,
-    deleteItem,
+    requestDelete,
+    cancelDelete,
+    confirmDelete,
   }
 }

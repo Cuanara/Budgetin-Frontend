@@ -1,13 +1,7 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useAuthCallback } from '../features/auth/hooks/useAuthCallback'
 
 const AuthCallback = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    // TODO: proses hasil login dari URL (token/code) di sini
-    navigate('/', { replace: true })
-  }, [navigate])
+  useAuthCallback()
 
   return <p>Memproses login...</p>
 }

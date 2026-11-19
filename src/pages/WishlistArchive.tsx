@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PageHeader from '../components/layout/PageHeader'
 import Toast from '../components/ui/Toast'
 import WishlistArchiveCard from '../features/wishlist/components/WishlistArchiveCard'
@@ -14,17 +13,12 @@ const WishlistArchive = () => {
     totalHeld,
     toast,
     dismissToast,
+    pendingItem,
     restoreItem,
-    deleteItem,
+    requestDelete,
+    cancelDelete,
+    confirmDelete,
   } = useWishlistArchive()
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
-
-  const pendingItem = items.find((item) => item.id === pendingDeleteId) ?? null
-
-  const handleConfirmDelete = (id: string) => {
-    deleteItem(id)
-    setPendingDeleteId(null)
-  }
 
   return (
     <div className="space-y-6">
@@ -48,7 +42,7 @@ const WishlistArchive = () => {
                 key={item.id}
                 item={item}
                 onRestore={restoreItem}
-                onDelete={setPendingDeleteId}
+                onDelete={requestDelete}
               />
             ))}
           </ul>
@@ -61,8 +55,8 @@ const WishlistArchive = () => {
 
       <WishlistDeleteConfirmModal
         item={pendingItem}
-        onCancel={() => setPendingDeleteId(null)}
-        onConfirm={handleConfirmDelete}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
       />
 
       {toast && (
