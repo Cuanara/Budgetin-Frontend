@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@theme {
+  --animate-orbit: orbit 8s linear infinite;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes orbit {
+    from {
+      transform: translate3d(0, 0, 0) rotate(0deg) translateX(var(--orbit-r, 10px)) rotate(0deg);
+    }
+    to {
+      transform: translate3d(0, 0, 0) rotate(360deg) translateX(var(--orbit-r, 10px)) rotate(-360deg);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@theme {
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
