@@ -3,5 +3,5 @@ import { useAuthStore } from '../../../stores/authStore'
 
 export default function GuestRoute() {
   const token = useAuthStore((s) => s.token)
-  return token ? <Navigate to="/" replace /> : <Outlet />
+  return token ? <Navigate to="/beranda" replace /> : <Outlet />
 }
