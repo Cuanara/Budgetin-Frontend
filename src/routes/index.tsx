@@ -9,6 +9,7 @@ import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Register from '../pages/Register'
 import VerifyOtp from '../pages/VerifyOtp'
+import Savings from '../pages/Savings'
 import Wishlist from '../pages/Wishlist'
 import WishlistDetail from '../pages/WishlistDetail'
 import WishlistArchive from '../pages/WishlistArchive'
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/beranda', element: <Home /> },
           { path: '/wishlist', element: <Wishlist /> },
+          { path: '/tabungan', element: <Savings /> },
           { path: '/wishlist/:id', element: <WishlistDetail /> },
           { path: '/wishlist/arsip', element: <WishlistArchive /> },
         ],
