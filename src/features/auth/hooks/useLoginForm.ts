@@ -40,7 +40,7 @@ export function useLoginForm() {
       if (values.remember) saveRememberedEmail(values.email)
       else clearRememberedEmail()
 
-      navigate('/beranda', { replace: true })
+      navigate('/dashboard', { replace: true })
     } catch {
       setServerError('Email atau password salah. Coba lagi')
     }
