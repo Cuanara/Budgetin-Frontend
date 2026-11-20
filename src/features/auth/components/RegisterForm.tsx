@@ -3,6 +3,7 @@ import Alert from '../../../components/ui/Alert'
 import Button from '../../../components/ui/Button'
 import Divider from '../../../components/ui/Divider'
 import Input from '../../../components/ui/Input'
+import { useGoogleAuth } from '../hooks/useGoogleAuth'
 import { useRegisterForm } from '../hooks/useRegisterForm'
 import GoogleIcon from './GoogleIcon'
 
@@ -17,21 +18,15 @@ export default function RegisterForm() {
     passwordError,
     agreeError,
   } = useRegisterForm()
+  const { startGoogleAuth } = useGoogleAuth()
 
   return (
     <div>
-      <h2 className="text-2xl font-extrabold">Buat akun baru</h2>
-      <p className="mt-1 text-xs text-muted">Gratis, dan cuma butuh semenit.</p>
+      <h2 className="text-4xl font-extrabold">Buat akun baru</h2>
+      <p className="mt-2 text-sm text-muted">Gratis, dan cuma butuh semenit.</p>
 
-      <div className="mt-6 space-y-4">
-        <Button type="button" variant="outline">
-          <GoogleIcon />
-          Daftar dengan Google
-        </Button>
-
-        <Divider text="atau pakai email" />
-
-        <form onSubmit={submit} noValidate className="space-y-4">
+      <div className="mt-8 space-y-5">
+        <form onSubmit={submit} noValidate className="space-y-5">
           {serverError && <Alert message={serverError} />}
 
           <Input
@@ -90,13 +85,20 @@ export default function RegisterForm() {
           </Button>
         </form>
 
-        <p className="text-center text-xs text-muted">
-          Sudah punya akun?{' '}
-          <Link to="/login" className="font-semibold text-primary hover:underline">
-            Masuk
-          </Link>
-        </p>
+        <Divider text="ATAU" />
+
+        <Button type="button" variant="outline" onClick={startGoogleAuth}>
+          <GoogleIcon />
+          Daftar dengan Google
+        </Button>
       </div>
+
+      <p className="mt-6 text-center text-sm text-muted">
+        Sudah punya akun?{' '}
+        <Link to="/login" className="font-semibold text-primary hover:underline">
+          Masuk
+        </Link>
+      </p>
     </div>
   )
 }

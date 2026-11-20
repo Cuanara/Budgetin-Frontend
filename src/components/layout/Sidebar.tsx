@@ -4,13 +4,8 @@ import SidebarUser from './SidebarUser'
 
 const Sidebar = () => (
   <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-white px-6 py-7">
-    <div className="mb-10 flex items-center gap-3 px-1">
-      <img
-        src="/images/logo.png"
-        alt="Budgetin"
-        className="h-11 w-11 rounded-xl object-contain"
-      />
-      <span className="text-2xl font-medium">Budgetin</span>
+    <div className="mb-10 px-1">
+      <img src="/images/logo-dark.png" alt="Budgetin" className="h-14 w-auto" />
     </div>
 
     <nav className="flex flex-col gap-1.5">
@@ -18,7 +13,6 @@ const Sidebar = () => (
         <NavLink
           key={path}
           to={path}
-          end={path === '/'}
           className={({ isActive }) =>
             `flex items-center gap-3.5 rounded-full px-5 py-3 text-[15px] transition-colors ${
               isActive

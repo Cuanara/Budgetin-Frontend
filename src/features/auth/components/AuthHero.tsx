@@ -15,10 +15,7 @@ export default function AuthHero({ className }: { className?: string }) {
 
       {/* Teks */}
       <div className="relative z-10 px-[8%] pt-[4vh]">
-        <div className="flex items-center gap-3">
-          <img src="/images/logo.png" alt="Budgetin" className="size-11 rounded-xl" />
-          <span className="text-xl font-bold">Budgetin</span>
-        </div>
+        <img src="/images/logo.png" alt="Budgetin" className="h-14 w-auto" />
 
         <h1 className="mt-[4vh] text-4xl font-extrabold leading-[1.1] xl:text-5xl">
           Duit rapi,
