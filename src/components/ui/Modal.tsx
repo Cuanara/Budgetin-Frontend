@@ -1,14 +1,23 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 
+type Size = 'sm' | 'md' | 'lg'
+
 interface Props {
   open: boolean
   onClose?: () => void // tanpa onClose, popup hanya bisa ditutup lewat tombol di dalamnya
   labelledBy?: string
+  size?: Size
   children: ReactNode
 }
 
-const Modal = ({ open, onClose, labelledBy, children }: Props) => {
+const SIZE_CLASS: Record<Size, string> = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+}
+
+const Modal = ({ open, onClose, labelledBy, size = 'lg', children }: Props) => {
   useEffect(() => {
     if (!open) return
 
@@ -30,14 +39,14 @@ const Modal = ({ open, onClose, labelledBy, children }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex overflow-y-auto bg-black/40 p-4"
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}
-        className="w-full max-w-lg rounded-[28px] bg-white p-8 shadow-xl"
+        className={`m-auto w-full ${SIZE_CLASS[size]} rounded-[28px] bg-white p-8 shadow-xl`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
