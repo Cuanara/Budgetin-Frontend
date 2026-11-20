@@ -6,6 +6,6 @@ export const useAuthCallback = () => {
 
   useEffect(() => {
     // TODO: proses hasil login dari URL (token/code) di sini
-    navigate('/', { replace: true })
+    navigate('/dashboard', { replace: true })
   }, [navigate])
 }

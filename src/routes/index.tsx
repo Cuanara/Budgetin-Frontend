@@ -30,11 +30,11 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
-          { path: '/beranda', element: <Home /> },
+          { path: '/dashboard', element: <Home /> },
           { path: '/wishlist', element: <Wishlist /> },
-          { path: '/tabungan', element: <Savings /> },
+          { path: '/savings', element: <Savings /> },
           { path: '/wishlist/:id', element: <WishlistDetail /> },
-          { path: '/wishlist/arsip', element: <WishlistArchive /> },
+          { path: '/wishlist/archive', element: <WishlistArchive /> },
         ],
       },
     ],
