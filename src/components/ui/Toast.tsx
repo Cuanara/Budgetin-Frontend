@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useEffect } from 'react'
 
 interface Props {
@@ -15,6 +16,8 @@ const Toast = ({
   onClose,
   duration = 5000,
 }: Props) => {
+  const hasAction = Boolean(actionLabel && onAction)
+
   useEffect(() => {
     const timer = setTimeout(onClose, duration)
     return () => clearTimeout(timer)
@@ -23,10 +26,13 @@ const Toast = ({
   return (
     <div
       role="status"
-      className="fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full bg-[#0F1F17] py-2.5 pl-6 pr-2.5 text-sm text-white shadow-lg"
+      className={clsx(
+        'fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full bg-[#0F1F17] py-2.5 text-sm text-white shadow-lg',
+        hasAction ? 'pl-6 pr-2.5' : 'justify-center px-6',
+      )}
     >
       <span>{message}</span>
-      {actionLabel && onAction && (
+      {hasAction && (
         <button
           type="button"
           onClick={onAction}
