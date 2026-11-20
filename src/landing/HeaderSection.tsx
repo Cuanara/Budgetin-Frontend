@@ -1,6 +1,6 @@
 import type { MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo-budgetin.png";
 
 const navigationItems = [
   { label: "Fitur", href: "#fitur" },
@@ -21,24 +21,13 @@ export const HeaderSection = () => {
   return (
     <header className="sticky top-0 z-50 flex h-21.25 w-full flex-col items-start border-b border-[#dce9e1] bg-white px-30 py-0">
       <div className="relative flex h-21 w-full max-w-300 items-center justify-between px-10 py-0">
-        <Link
-          className="inline-flex h-21 items-center gap-3"
-          to="/"
-          aria-label="Budgetin beranda"
-        >
-          <span
-            className="relative h-11 w-11 rounded-[13px] bg-cover bg-center"
-            style={{ backgroundImage: `url(${logo})` }}
-            role="img"
-            aria-label="Logo Budgetin"
-          />
-          <span className="inline-flex flex-col items-start">
-            <span className="relative -mt-px flex w-fit items-center font-['Plus_Jakarta_Sans-Bold',Helvetica] text-2xl font-bold leading-[normal] tracking-[-0.50px] text-[#0e1a14]">
-              Budgetin
-            </span>
-          </span>
-        </Link>
-
+      <Link
+        className="inline-flex h-21 items-center"
+        to="/"
+        aria-label="Budgetin beranda"
+      >
+        <img src={logo} alt="Budgetin" className="h-11 w-auto" />
+      </Link>
         <nav aria-label="Navigasi utama">
           <ul className="inline-flex items-start gap-1.5">
             {navigationItems.map((item) => (
