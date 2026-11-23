@@ -42,7 +42,7 @@ export default function Input({
           className={clsx(
             'h-12 w-full rounded-xl border bg-white px-4 text-sm outline-none transition',
             'placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20',
-            hasError ? 'border-danger' : 'border-line',
+            hasError ? 'border-danger bg-red-50' : 'border-line',
             isPassword && 'pr-12',
             className,
           )}

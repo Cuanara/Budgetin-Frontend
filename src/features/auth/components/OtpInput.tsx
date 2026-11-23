@@ -51,7 +51,7 @@ export default function OtpInput({ digits, onChange, invalid, disabled }: Props)
   }
 
   return (
-    <div className="flex justify-center gap-2.5">
+    <div className="flex justify-center gap-1.5 sm:gap-2.5">
       {digits.map((digit, i) => (
         <input
           key={i}
@@ -70,8 +70,8 @@ export default function OtpInput({ digits, onChange, invalid, disabled }: Props)
           aria-label={`Digit ${i + 1}`}
           autoFocus={i === 0}
           className={clsx(
-            'size-12 rounded-xl border bg-white text-center text-lg font-semibold outline-none transition',
-            'focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30',
+            'size-10 rounded-xl border sm:size-12 bg-white text-center text-lg font-semibold outline-none transition',
+            'bg-gray-50 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20',
             invalid ? 'border-danger' : 'border-line',
           )}
         />

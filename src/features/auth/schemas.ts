@@ -11,7 +11,11 @@ export type LoginFormValues = z.infer<typeof loginSchema>
 export const registerSchema = z.object({
   name: z.string().min(1, 'Nama wajib diisi').min(2, 'Minimal 2 karakter'),
   email: z.string().min(1, 'Email wajib diisi').email('Format email tidak valid'),
-  password: z.string().min(1, 'Password wajib diisi').min(8, 'Minimal 8 karakter'),
+  password: z
+    .string()
+    .min(1, 'Password wajib diisi')
+    .min(8, 'Minimal 8 karakter')
+    .regex(/[A-Za-z]/, 'Password harus mengandung huruf'),
   agree: z.boolean().refine((v) => v, 'Kamu harus menyetujui syarat dan ketentuan'),
 })
 
