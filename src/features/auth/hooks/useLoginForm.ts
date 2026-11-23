@@ -2,7 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { login } from '../../../services/authService'
+import { ApiError } from '../../../services/apiClient'
+import { EmailNotVerifiedError, login } from '../../../services/authService'
 import { useAuthStore } from '../../../stores/authStore'
 import {
   clearRememberedEmail,
@@ -41,8 +42,17 @@ export function useLoginForm() {
       else clearRememberedEmail()
 
       navigate('/dashboard', { replace: true })
-    } catch {
-      setServerError('Email atau password salah. Coba lagi')
+    } catch (err) {
+      if (err instanceof EmailNotVerifiedError) {
+        // TODO: arahkan ke /verifikasi-otp setelah BE punya endpoint OTP
+        setServerError('Email kamu belum diverifikasi.')
+      } else if (err instanceof ApiError && err.status === 401) {
+        setServerError('Email atau password salah. Coba lagi')
+      } else if (err instanceof ApiError) {
+        setServerError(err.message)
+      } else {
+        setServerError('Tidak bisa terhubung ke server. Coba lagi')
+      }
     }
   })
 
