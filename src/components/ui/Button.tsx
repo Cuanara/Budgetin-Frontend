@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react'
 import type { ComponentProps } from 'react'
 
 type Props = ComponentProps<'button'> & {
-  variant?: 'primary' | 'outline'
+  variant?: 'primary' | 'outline' | 'danger'
   loading?: boolean
   fullWidth?: boolean
 }
@@ -28,6 +28,7 @@ export default function Button({
         variant === 'primary' && 'bg-primary text-white hover:bg-primary-hover',
         variant === 'outline' &&
           'border border-line bg-white text-gray-900 hover:bg-gray-50',
+        variant === 'danger' && 'bg-danger text-white hover:opacity-90',
         className,
       )}
       {...rest}

@@ -13,6 +13,7 @@ import Savings from '../pages/Savings'
 import Wishlist from '../pages/Wishlist'
 import WishlistDetail from '../pages/WishlistDetail'
 import WishlistArchive from '../pages/WishlistArchive'
+import Budget from '../pages/Budget'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Landing /> },
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { path: '/dashboard', element: <Home /> },
+          { path: '/budget', element: <Budget /> },
           { path: '/wishlist', element: <Wishlist /> },
           { path: '/savings', element: <Savings /> },
           { path: '/wishlist/:id', element: <WishlistDetail /> },
