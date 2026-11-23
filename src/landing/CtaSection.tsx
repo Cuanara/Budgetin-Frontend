@@ -4,12 +4,12 @@ export const CtaSection = () => {
   return (
     <section
       aria-labelledby="cta-title"
-      className="w-full bg-[#f5faf7] px-5 pt-8 pb-24 md:px-30"
+      className="w-full bg-[#f5faf7] px-5 pt-8 pb-24 md:px-30 max-md:pb-12"
     >
-      <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-3 rounded-[28px] bg-[#e4f9e9] px-10 py-14 text-center">
+      <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-3 rounded-[28px] bg-[#e4f9e9] px-10 py-14 text-center max-md:px-5 max-md:py-10">
         <h2
           id="cta-title"
-          className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[40px] font-bold leading-11 tracking-[-1.20px] text-[#0d452f]"
+          className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[40px] font-bold leading-11 tracking-[-1.20px] text-[#0d452f] max-md:text-[28px] max-md:leading-8 max-md:tracking-[-0.8px]"
         >
           Siap bikin duitmu lebih rapi?
         </h2>
