@@ -22,10 +22,10 @@ export default function RegisterForm() {
 
   return (
     <div>
-      <h2 className="text-4xl font-extrabold">Buat akun baru</h2>
-      <p className="mt-2 text-sm text-muted">Gratis, dan cuma butuh semenit.</p>
+      <h2 className="text-center text-2xl font-extrabold sm:text-3xl lg:text-left lg:text-4xl">Buat akun baru</h2>
+      <p className="mt-2 text-center text-xs text-muted sm:text-sm lg:text-left">Gratis, dan cuma butuh semenit.</p>
 
-      <div className="mt-8 space-y-5">
+      <div className="mt-6 space-y-5 sm:mt-8">
         <form onSubmit={submit} noValidate className="space-y-5">
           {serverError && <Alert message={serverError} />}
 
@@ -73,7 +73,7 @@ export default function RegisterForm() {
                   to="/syarat-ketentuan"
                   className="font-semibold text-primary hover:underline"
                 >
-                  Syarat dan Ketentuan
+                  Syarat & Ketentuan
                 </Link>
               </span>
             </label>
