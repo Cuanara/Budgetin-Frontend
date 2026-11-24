@@ -15,6 +15,8 @@ import WishlistDetail from '../pages/WishlistDetail'
 import WishlistArchive from '../pages/WishlistArchive'
 import Budget from '../pages/Budget'
 import Profile from '../pages/Profile'
+import ForgotPassword from '../pages/ForgotPassword'
+import ResetPassword from '../pages/ResetPassword'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Landing /> },
@@ -24,6 +26,8 @@ export const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       { path: '/verifikasi-otp', element: <VerifyOtp /> },
+      { path: '/forgot-password', element: <ForgotPassword /> },
+      { path: '/reset-password', element: <ResetPassword /> },
     ],
   },
   {

@@ -2,7 +2,7 @@
 import Toast from '../components/ui/Toast'
 import AddCategoryModal from '../features/budget/components/AddCategoryModal'
 import AllocationChart from '../features/budget/components/AllocationChart'
-import BudgetHeader from '../features/budget/components/BudgetHeader'
+import PageHeader from '../components/layout/PageHeader'
 import CategoryGrid from '../features/budget/components/CategoryGrid'
 import DeleteCategoryModal from '../features/budget/components/DeleteCategoryModal'
 import IncomeCard from '../features/budget/components/IncomeCard'
@@ -24,7 +24,7 @@ const Budget = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <BudgetHeader />
+      <PageHeader title="Budget" />
 
       <IncomeCard
         income={income}

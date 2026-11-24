@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import TermsModal from './TermsModal'
 import { Link } from 'react-router-dom'
 import Alert from '../../../components/ui/Alert'
 import Button from '../../../components/ui/Button'
@@ -8,7 +10,7 @@ import { useRegisterForm } from '../hooks/useRegisterForm'
 import GoogleIcon from './GoogleIcon'
 
 export default function RegisterForm() {
-  const {
+    const {
     register,
     submit,
     isSubmitting,
@@ -17,8 +19,10 @@ export default function RegisterForm() {
     emailError,
     passwordError,
     agreeError,
+    acceptTerms,
   } = useRegisterForm()
   const { startGoogleAuth } = useGoogleAuth()
+  const [showTerms, setShowTerms] = useState(false)
 
   return (
     <div>
@@ -69,12 +73,13 @@ export default function RegisterForm() {
               />
               <span>
                 Aku setuju dengan{' '}
-                <Link
-                  to="/syarat-ketentuan"
+               <button
+                  type="button"
+                  onClick={() => setShowTerms(true)}
                   className="font-semibold text-primary hover:underline"
                 >
                   Syarat & Ketentuan
-                </Link>
+                </button>
               </span>
             </label>
             {agreeError && <p className="mt-1.5 text-xs text-danger">{agreeError}</p>}
@@ -99,6 +104,14 @@ export default function RegisterForm() {
           Masuk
         </Link>
       </p>
+      <TermsModal
+        open={showTerms}
+        onClose={() => setShowTerms(false)}
+        onAccept={() => {
+          acceptTerms()
+          setShowTerms(false)
+        }}
+      />
     </div>
   )
 }

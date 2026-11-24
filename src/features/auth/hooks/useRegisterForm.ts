@@ -14,6 +14,7 @@ export function useRegisterForm() {
     register,
     handleSubmit,
     setError,
+    setValue, // baru
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -53,5 +54,7 @@ export function useRegisterForm() {
     emailError: errors.email?.message,
     passwordError: errors.password?.message,
     agreeError: errors.agree?.message,
+    // baru: dipanggil saat menekan "Saya mengerti" di modal
+    acceptTerms: () => setValue('agree', true, { shouldValidate: true }),
   }
 }

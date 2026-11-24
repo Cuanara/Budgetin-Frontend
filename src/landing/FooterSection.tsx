@@ -13,7 +13,7 @@ const links: { label: string; id: LegalId }[] = [
 export const FooterSection = ({ active, onSelect }: FooterSectionProps) => {
   return (
     <footer className="w-full border-t border-[#dce9e1] bg-white px-5 md:px-[120px]">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-between gap-3 px-0 py-6 md:flex-row md:px-10">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-between gap-3 px-0 py-6 md:flex-row md:px-10 max-md:items-start">
         <nav aria-label="Tautan legal">
           <ul className="flex items-center gap-6">
             {links.map((link) => {

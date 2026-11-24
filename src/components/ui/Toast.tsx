@@ -27,7 +27,7 @@ const Toast = ({
     <div
       role="status"
       className={clsx(
-        'fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full bg-[#0F1F17] py-2.5 text-sm text-white shadow-lg',
+        'fixed bottom-24 left-1/2 z-50 flex w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-4 rounded-full bg-[#0F1F17] py-2.5 text-sm text-white shadow-lg md:bottom-8',
         hasAction ? 'pl-6 pr-2.5' : 'justify-center px-6',
       )}
     >

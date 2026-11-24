@@ -7,9 +7,9 @@ export const HeroSection = () => {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="flex flex-col w-full items-start pt-20 pb-24 px-[120px]"
+      className="flex flex-col w-full items-start pt-20 pb-24 px-[120px] max-lg:px-6 max-md:px-5 max-md:pt-8 max-md:pb-12"
     >
-      <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] grid-rows-[470px] max-w-[1200px] h-[470px] gap-12 px-10 py-0">
+      <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] grid-rows-[470px] max-w-[1200px] h-[470px] gap-12 px-10 py-0 max-lg:w-full max-lg:h-auto max-lg:grid-cols-1 max-lg:grid-rows-none max-lg:gap-10 max-lg:px-0 max-md:gap-2">
         <div className="relative row-[1_/_2] col-[1_/_2] self-center w-full h-fit flex flex-col items-start gap-[17.4px]">
           <div className="inline-flex items-start px-4 py-2 relative flex-[0_0_auto] bg-white rounded-[20px] border border-solid border-[#dce9e1]">
             <div className="relative flex items-center w-fit [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-[#0d452f] text-sm tracking-[0] leading-[normal]">
@@ -20,7 +20,7 @@ export const HeroSection = () => {
           <div className="items-start pt-[1.82px] pb-[0.67px] px-0 flex flex-col relative self-stretch w-full flex-[0_0_auto]">
             <h1
               id="hero-heading"
-              className="relative self-stretch mt-[-1.00px] [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-transparent text-7xl tracking-[-2.50px] leading-[73.4px]"
+              className="relative self-stretch mt-[-1.00px] [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-transparent text-7xl tracking-[-2.50px] leading-[73.4px] max-md:text-[44px] max-md:leading-[48px] max-md:tracking-[-1.5px]"
             >
               <span className="text-[#0d452f] tracking-[-1.80px]">
                 Duit rapi,
@@ -32,13 +32,13 @@ export const HeroSection = () => {
             </h1>
           </div>
 
-          <div className="flex flex-col max-w-[500px] w-[500px] items-start relative flex-[0_0_auto]">
-            <p className="relative w-fit mt-[-1.00px] mr-[-16.00px] [font-family:'Plus_Jakarta_Sans-Medium',Helvetica] font-medium text-[#5b6e63] text-[19px] tracking-[0] leading-[29.5px]">
-              Budgetin bantu anda catat pemasukan dan pengeluaran,
-              <br />
-              atur budget bulanan, dan tahan belanja impulsif lewat
-              <br />
-              wishlist yang pintar.
+          <div className="flex flex-col max-w-[500px] w-[500px] items-start relative flex-[0_0_auto] max-lg:w-full">
+            <p className="relative w-fit mt-[-1.00px] mr-[-16.00px] [font-family:'Plus_Jakarta_Sans-Medium',Helvetica] font-medium text-[#5b6e63] text-[19px] tracking-[0] leading-[29.5px] max-md:mr-0 max-md:text-base max-md:leading-6 max-md:[&_br]:hidden">
+             Budgetin bantu anda catat pemasukan dan pengeluaran,{" "}
+            <br />
+            atur budget bulanan, dan tahan belanja impulsif lewat{" "}
+            <br />
+            wishlist yang pintar.
             </p>
           </div>
 
@@ -64,10 +64,10 @@ export const HeroSection = () => {
 
         <div
           aria-label="Ringkasan keuangan Budgetin"
-          className="relative row-[1_/_2] col-[2_/_3] self-center w-full h-[470px]"
+          className="relative row-[1_/_2] col-[2_/_3] self-center w-full h-[470px] max-lg:row-[2_/_3] max-lg:col-[1_/_2] max-lg:mx-auto max-lg:max-w-[495px] max-md:flex max-md:h-auto max-md:max-w-none max-md:flex-col max-md:gap-4 max-md:gap-0"
         >
           <div
-            className="absolute -top-0.5 left-[115px] w-[380px] animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105"
+            className="absolute -top-0.5 left-[115px] w-[380px] animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105 max-md:static max-md:w-full max-md:-my-1 max-md:left-0 max-md:top-0 max-md:right-0"
             style={{ animationDelay: "0.1s" }}
           >
             <img
@@ -82,7 +82,7 @@ export const HeroSection = () => {
           </div>
 
           <div
-            className="absolute top-[148px] -left-1 w-80 animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105"
+            className="absolute top-[148px] -left-1 w-80 animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105 max-md:static max-md:w-full max-md:-my-5 max-md:left-0 max-md:top-0 max-md:right-0"
             style={{ animationDelay: "0.3s" }}
           >
             <img
@@ -99,7 +99,7 @@ export const HeroSection = () => {
           </div>
 
           <div
-            className="absolute top-[290px] right-px w-[290px] animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105"
+            className="absolute top-[290px] right-px w-[290px] animate-fade-up motion-reduce:animate-none transition-[scale] duration-500 ease-out hover:scale-105 max-md:static max-md:w-full max-md:-my-5 max-md:left-0 max-md:top-0 max-md:right-0"
             style={{ animationDelay: "0.5s" }}
           >
             <img
