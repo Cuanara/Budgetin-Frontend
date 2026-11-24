@@ -49,6 +49,29 @@ export async function logout(): Promise<void> {
   await apiClient<null>(API_PATHS.logout, { method: 'POST' })
 }
 
+// Path sementara. Samakan dengan route Laravel, atau pindahkan ke API_PATHS
+// kalau kamu mau (aku belum lihat constants/api.ts).
+export type ResetPasswordPayload = {
+  email: string
+  token: string
+  password: string
+  password_confirmation: string
+}
+
+// MOCK: nanti ganti ke endpoint forgot password dari BE
+export async function forgotPassword(email: string): Promise<void> {
+  await sleep(800)
+  if (!email) throw new Error('Email tidak ditemukan')
+}
+
+// MOCK: nanti ganti ke endpoint reset password dari BE
+export async function resetPassword(payload: ResetPasswordPayload): Promise<void> {
+  await sleep(800)
+  if (!payload.token || !payload.email) {
+    throw new ApiError(422, 'Tautan tidak valid')
+  }
+}
+
 // ---- MOCK di bawah ini tetap, belum ada endpoint BE-nya ----
 
 export function getGoogleAuthUrl(): string {
