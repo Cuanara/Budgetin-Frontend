@@ -3,7 +3,7 @@ import { NAV_ITEMS } from '../../constants/navigation'
 import SidebarUser from './SidebarUser'
 
 const Sidebar = () => (
-  <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-white px-6 py-7">
+  <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-white px-6 py-7 md:flex">
     <div className="mb-10 px-1">
       <img src="/images/logo-dark.png" alt="Budgetin" className="h-14 w-auto" />
     </div>

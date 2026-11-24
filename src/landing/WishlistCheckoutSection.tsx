@@ -56,21 +56,21 @@ export const WishlistCheckoutSection = () => {
   return (
     <section
       aria-labelledby="wishlist-checkout-title"
-      className="w-full bg-[#0b3d24] px-[120px] py-24"
+      className="w-full bg-[#0b3d24] px-[120px] py-24 max-lg:px-6 max-md:px-5 max-md:py-14"
     >
       <div
         ref={containerRef}
-        className="mx-auto grid w-full max-w-[1200px] grid-cols-2 items-center gap-16 px-10"
+        className="mx-auto grid w-full max-w-[1200px] grid-cols-2 items-center gap-16 px-10 max-lg:grid-cols-1 max-lg:gap-10 max-lg:px-0"
       >
         <div className={`flex flex-col items-start gap-4 ${reveal}`}>
           <h2
             id="wishlist-checkout-title"
-            className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-5xl font-bold leading-[51.8px] tracking-[-1.40px]"
+            className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-5xl font-bold leading-[51.8px] tracking-[-1.40px] max-md:text-[34px] max-md:leading-[38px] max-md:tracking-[-1px]"
           >
             <span className="block text-white">Tahan dulu,</span>
             <span className="block text-[#7ad9ae]">baru checkout.</span>
           </h2>
-          <p className="max-w-[500px] font-['Plus_Jakarta_Sans-Medium',Helvetica] text-[19px] font-medium leading-[29.5px] text-[#ffffffd1]">
+          <p className="max-w-[500px] font-['Plus_Jakarta_Sans-Medium',Helvetica] text-[19px] font-medium leading-[29.5px] text-[#ffffffd1] max-md:text-base max-md:leading-6">
             Simpan link barang incaranmu, pilih masa tunda, dan biarkan
             Budgetin yang mengingatkan.
           </p>
@@ -96,7 +96,7 @@ export const WishlistCheckoutSection = () => {
             <p className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-xs font-bold text-[#0f6b2c]">
               MASA TUNDA BERAKHIR
             </p>
-            <h3 className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-2xl font-bold tracking-[-0.50px] text-[#0e1a14]">
+            <h3 className="font-['Plus_Jakarta_Sans-Bold',Helvetica] text-2xl font-bold tracking-[-0.50px] text-[#0e1a14] max-md:text-lg">
               Headphone nirkabel, jadi dibeli?
             </h3>
             <div className="flex items-start gap-2.5 pt-3">

@@ -81,19 +81,19 @@ useEffect(() => {
     <section
       id="fitur"
       aria-labelledby="budgeting-features-title"
-      className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-3.5 px-10 pt-24 pb-24"
+      className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-3.5 px-10 pt-24 pb-24 max-md:px-5 max-md:pt-14 max-md:pb-14"
     >
       <h2
         id="budgeting-features-title"
-        className="text-center font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[44px] font-bold leading-[48.4px] tracking-[-1.20px] text-[#0e1a14]"
+        className="text-center font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[44px] font-bold leading-[48.4px] tracking-[-1.20px] text-[#0e1a14] max-md:text-[28px] max-md:leading-8 max-md:tracking-[-0.8px]"
       >
         Semua yang kamu butuh buat ngatur duit
       </h2>
-      <p className="text-center font-['Plus_Jakarta_Sans-Medium',Helvetica] text-lg font-medium leading-[27px] text-[#5b6e63]">
+      <p className="text-center font-['Plus_Jakarta_Sans-Medium',Helvetica] text-lg font-medium leading-[27px] text-[#5b6e63] max-md:text-base">
         Simpel, cepat, dan tidak bikin pusing.
       </p>
 
-<div ref={gridRef} className="mt-[34px] grid w-full grid-cols-3 gap-5">
+<div ref={gridRef} className="mt-[34px] grid w-full grid-cols-3 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1">
   {budgetingFeatures.map(({ title, description, icon: Icon }) => (
     <div
       key={title}

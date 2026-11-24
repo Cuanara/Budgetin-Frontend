@@ -42,16 +42,16 @@ export const FaqSection = () => {
     <section
       id="faq"
       aria-labelledby="faq-title"
-      className="w-full scroll-mt-24 bg-[#f5faf7] px-5 pt-24 pb-16 md:px-[120px]"
+      className="w-full scroll-mt-24 bg-[#f5faf7] px-5 pt-24 pb-16 md:px-[120px] max-md:pt-14 max-md:pb-10"
     >
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-3.5 px-0 md:px-10">
         <h2
           id="faq-title"
-          className="text-center font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[44px] font-bold leading-[48.4px] tracking-[-1.20px] text-[#0e1a14]"
+          className="text-center font-['Plus_Jakarta_Sans-Bold',Helvetica] text-[44px] font-bold leading-[48.4px] tracking-[-1.20px] text-[#0e1a14] max-md:text-[28px] max-md:leading-8 max-md:tracking-[-0.8px]"
         >
           Pertanyaan yang sering muncul
         </h2>
-        <p className="text-center font-['Plus_Jakarta_Sans-Medium',Helvetica] text-lg font-medium leading-[27px] text-[#5b6e63]">
+        <p className="text-center font-['Plus_Jakarta_Sans-Medium',Helvetica] text-lg font-medium leading-[27px] text-[#5b6e63] max-md:text-base">
           Belum nemu jawabannya? Daftar saja dan coba langsung.
         </p>
 

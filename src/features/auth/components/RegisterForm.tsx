@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import TermsModal from './TermsModal'
 import { Link } from 'react-router-dom'
 import Alert from '../../../components/ui/Alert'
 import Button from '../../../components/ui/Button'
@@ -8,7 +10,7 @@ import { useRegisterForm } from '../hooks/useRegisterForm'
 import GoogleIcon from './GoogleIcon'
 
 export default function RegisterForm() {
-  const {
+    const {
     register,
     submit,
     isSubmitting,
@@ -17,8 +19,11 @@ export default function RegisterForm() {
     emailError,
     passwordError,
     agreeError,
+    acceptTerms,
   } = useRegisterForm()
-  const { startGoogleAuth } = useGoogleAuth()
+  
+  const { googleButtonRef, googleError, isGoogleLoading } = useGoogleAuth()
+  const [showTerms, setShowTerms] = useState(false)
 
   return (
     <div>
@@ -69,28 +74,51 @@ export default function RegisterForm() {
               />
               <span>
                 Aku setuju dengan{' '}
-                <Link
-                  to="/syarat-ketentuan"
+               <button
+                  type="button"
+                  onClick={() => setShowTerms(true)}
                   className="font-semibold text-primary hover:underline"
                 >
                   Syarat & Ketentuan
-                </Link>
+                </button>
               </span>
             </label>
             {agreeError && <p className="mt-1.5 text-xs text-danger">{agreeError}</p>}
           </div>
 
-          <Button type="submit" loading={isSubmitting}>
+          <Button type="submit" loading={isSubmitting} disabled={isGoogleLoading}>
             Buat akun
           </Button>
         </form>
 
         <Divider text="ATAU" />
 
-        <Button type="button" variant="outline" onClick={startGoogleAuth}>
-          <GoogleIcon />
-          Daftar dengan Google
-        </Button>
+        {googleError && <Alert message={googleError} />}
+
+        {/* tombolmu hanya tampilan; yang diklik user adalah tombol resmi Google yang transparan di atasnya */}
+        <div className="relative">
+          <Button
+            type="button"
+            variant="outline"
+            loading={isGoogleLoading}
+            disabled={isSubmitting}
+            tabIndex={-1}
+            aria-hidden="true"
+          >
+            {!isGoogleLoading && <GoogleIcon />}
+            Daftar dengan Google
+          </Button>
+
+          <div
+            className={
+              'absolute inset-0 flex items-center justify-center overflow-hidden rounded-full opacity-[0.01] ' +
+              (isGoogleLoading || isSubmitting ? 'pointer-events-none' : '')
+            }
+          >
+            {/* tombol Google 40px dibesarkan ke 48px agar menutup seluruh tombol */}
+            <div ref={googleButtonRef} style={{ transform: 'scaleY(1.2)' }} />
+          </div>
+        </div>
       </div>
 
       <p className="mt-6 text-center text-sm text-muted">
@@ -99,6 +127,14 @@ export default function RegisterForm() {
           Masuk
         </Link>
       </p>
+      <TermsModal
+        open={showTerms}
+        onClose={() => setShowTerms(false)}
+        onAccept={() => {
+          acceptTerms()
+          setShowTerms(false)
+        }}
+      />
     </div>
   )
 }
