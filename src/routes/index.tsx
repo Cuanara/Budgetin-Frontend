@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+﻿import { createBrowserRouter } from 'react-router-dom'
 import GuestRoute from '../features/auth/components/GuestRoute'
 import ProtectedRoute from '../features/auth/components/ProtectedRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
@@ -14,6 +14,7 @@ import Wishlist from '../pages/Wishlist'
 import WishlistDetail from '../pages/WishlistDetail'
 import WishlistArchive from '../pages/WishlistArchive'
 import Budget from '../pages/Budget'
+import Profile from '../pages/Profile'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
 
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
           { path: '/savings', element: <Savings /> },
           { path: '/wishlist/:id', element: <WishlistDetail /> },
           { path: '/wishlist/archive', element: <WishlistArchive /> },
+          { path: '/profile', element: <Profile /> },
         ],
       },
     ],
