@@ -18,7 +18,6 @@ import Profile from '../pages/Profile'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
 
-
 export const router = createBrowserRouter([
   { path: '/', element: <Landing /> },
   {
