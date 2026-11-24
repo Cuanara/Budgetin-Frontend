@@ -84,7 +84,7 @@ const AddCategoryModal = ({ categories, income, onSubmit, onClose }: Props) => {
             </span>
           </div>
           <p className="text-xs text-gray-500">
-            ≈{' '}
+             ={' '}
             <span className="font-medium text-[#0F1F17]">
               {formatRupiah(preview.amount)}
             </span>{' '}
@@ -95,24 +95,26 @@ const AddCategoryModal = ({ categories, income, onSubmit, onClose }: Props) => {
           <p className="mt-1.5 text-xs text-danger">{errors.percent}</p>
         )}
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-gray-500">Pilihan cepat</span>
-          {QUICK_PERCENTS.map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => form.setPercent(String(p))}
-              aria-pressed={percentValue === p}
-              className={clsx(
-                'rounded-full border px-3.5 py-1 text-xs font-medium transition',
-                percentValue === p
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-line text-gray-700 hover:bg-gray-50',
-              )}
-            >
-              {p}%
-            </button>
-          ))}
+       <div className="mt-3 flex items-center gap-2">
+          <span className="shrink-0 text-xs text-gray-500">Pilih cepat</span>
+          <div className="flex min-w-0 flex-1 gap-2">
+            {QUICK_PERCENTS.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => form.setPercent(String(p))}
+                aria-pressed={percentValue === p}
+                className={clsx(
+                  'min-w-0 flex-1 rounded-full border py-1.5 text-xs font-medium transition',
+                  percentValue === p
+                    ? 'border-primary bg-primary text-white'
+                    : 'border-line text-gray-700 hover:bg-gray-50',
+                )}
+              >
+                {p}%
+              </button>
+            ))}
+          </div>
         </div>
 
         <label
@@ -138,13 +140,13 @@ const AddCategoryModal = ({ categories, income, onSubmit, onClose }: Props) => {
         )}
 
                 {preview.canPreview && preview.donor && (
-          <div className="mt-4 rounded-xl border border-emerald-100 bg-surface p-4 text-[13px]">
-            <p className="mb-3 text-sm text-gray-700">Setelah disimpan</p>
+          <div className="mt-4 rounded-xl border border-emerald-100 bg-surface p-3 text-xs md:p-4 md:text-[13px]">
+            <p className="mb-2.5 text-sm font-medium text-gray-700">Setelah disimpan</p>
 
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-gray-500">{preview.donor.name}</span>
-                <span className="text-right text-gray-500">
+                 <span className="min-w-0 truncate text-gray-500">{preview.donor.name}</span>
+                <span className="shrink-0 whitespace-nowrap text-right text-gray-500">
                   <span className="font-semibold text-[#0F1F17]">
                     {preview.donor.currentPercent}% → {preview.donor.nextPercent}%
                   </span>
@@ -155,13 +157,13 @@ const AddCategoryModal = ({ categories, income, onSubmit, onClose }: Props) => {
               </div>
 
               <div className="flex items-center justify-between gap-3">
-                <span className="flex items-center gap-2 text-gray-500">
-                  {values.name.trim() || 'Kategori baru'}
-                  <span className="rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-medium text-white">
+                <span className="flex min-w-0 items-center gap-2 text-gray-500">
+                  <span className="truncate">{values.name.trim() || 'Kategori baru'}</span>
+                  <span className="shrink-0 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-medium text-white">
                     Baru
                   </span>
                 </span>
-                <span className="text-right text-gray-500">
+                <span className="shrink-0 whitespace-nowrap text-right text-gray-500">
                   <span className="font-semibold text-[#0F1F17]">
                     {percentValue}%
                   </span>

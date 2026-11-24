@@ -52,7 +52,7 @@ export default function LoginForm() {
           <div className="flex items-center justify-between">
             <Checkbox label="Tetap login" {...register('remember')} />
             <Link
-              to="/lupa-password"
+              to="/forgot-password"
               className="text-sm font-semibold text-primary hover:underline"
             >
               Lupa password?

@@ -29,7 +29,7 @@ export default function AuthHero({ className }: { className?: string }) {
       </div>
 
       {/* Mockup: ambil sisa tinggi panel, disembunyikan jika layar terlalu pendek */}
-      <div className="relative z-10 flex min-h-0 flex-1 items-end justify-center px-[4%] pb-[3vh] pt-[2vh] [@media(max-height:700px)]:hidden">
+     <div className="relative z-10 flex min-h-0 flex-1 items-end justify-center px-[4%] pb-[3vh] pt-[2vh] [@media(max-height:500px)]:hidden">
         <div className="relative aspect-607/400 h-full max-h-full max-w-full">
           <img
             src="/images/border.png"
