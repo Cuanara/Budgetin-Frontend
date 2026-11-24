@@ -1,29 +1,51 @@
+@import "@fontsource-variable/plus-jakarta-sans";
 @import "tailwindcss";
 
-@layer base {
-  body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #071C13;
-    color: #F1F7F4;
-    -webkit-font-smoothing: antialiased;
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
-/* Custom scrollbar for dark theme */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+@theme {
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #0b4a2e;
+  --color-primary-hover: #083a24;
+  --color-mint: #7ee2b0;
+  --color-surface: #f3faf6;
+  --color-danger: #d92d20;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+
+  --animate-orbit: orbit 8s linear infinite;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes orbit {
+    from {
+      transform: translate3d(0, 0, 0) rotate(0deg) translateX(var(--orbit-r, 10px)) rotate(0deg);
+    }
+    to {
+      transform: translate3d(0, 0, 0) rotate(360deg) translateX(var(--orbit-r, 10px)) rotate(-360deg);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #082117;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #194C35;
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #25704E;
+body {
+  @apply font-sans text-gray-900 antialiased;
 }
