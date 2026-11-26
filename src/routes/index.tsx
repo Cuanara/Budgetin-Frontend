@@ -7,6 +7,7 @@ import Home from '../pages/Home'
 import Landing from '../pages/Landing'
 import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
+import Notifications from '../pages/Notifications'
 import Register from '../pages/Register'
 import VerifyOtp from '../pages/VerifyOtp'
 import Savings from '../pages/Savings'
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
           { path: '/wishlist/:id', element: <WishlistDetail /> },
           { path: '/wishlist/archive', element: <WishlistArchive /> },
           { path: '/profile', element: <Profile /> },
+          { path: '/notifikasi', element: <Notifications /> },
         ],
       },
     ],
