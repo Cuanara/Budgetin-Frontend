@@ -1,23 +1,18 @@
-import { Bell } from 'lucide-react'
-import { formatToday } from '../../utils/format'
+import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useAuthStore } from '../../stores/authStore'
+import { useProfilePhotoStore } from '../../stores/profilePhotoStore'
+import { formatToday } from '../../utils/format'
 
 interface Props {
   title: string
 }
 
-const NotificationButton = () => (
-  <button
-    type="button"
-    aria-label="Notifikasi"
-    className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm"
-  >
-    <Bell size={18} />
-  </button>
-)
-
 const PageHeader = ({ title }: Props) => {
-  const name = useAuthStore((s) => s.user?.name ?? '')
+  const user = useAuthStore((s) => s.user)
+  const photoUrl = useProfilePhotoStore((s) =>
+    user ? (s.photos[user.email] ?? null) : null,
+  )
+  const name = user?.name ?? ''
 
   return (
     <header>
@@ -25,12 +20,16 @@ const PageHeader = ({ title }: Props) => {
       <div className="mb-4 flex items-center justify-between md:hidden">
         <img src="/images/logo-dark.png" alt="Budgetin" className="h-14 w-auto" />
         <div className="flex items-center gap-3">
-          <NotificationButton />
+          <NotificationBell />
           <div
             aria-label="Profil"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0B3B24] font-medium uppercase text-white"
+            className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#0B3B24] font-medium uppercase text-white"
           >
-            {name.charAt(0)}
+            {photoUrl ? (
+              <img src={photoUrl} alt="" className="size-full object-cover" />
+            ) : (
+              name.charAt(0)
+            )}
           </div>
         </div>
       </div>
@@ -42,7 +41,7 @@ const PageHeader = ({ title }: Props) => {
         </div>
         {/* Desktop saja: bell tetap di kanan seperti sebelumnya */}
         <div className="hidden md:block">
-          <NotificationButton />
+          <NotificationBell />
         </div>
       </div>
     </header>

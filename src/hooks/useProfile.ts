@@ -1,73 +1,71 @@
-import { useState, useCallback } from 'react';
-import { useBudgetStore } from '../stores/useBudgetStore';
-import type { NotificationSettingsState } from '../types/profile';
+import { useCallback, useEffect } from 'react'
+import { getMe } from '../services/authService'
+import { useAuthStore } from '../stores/authStore'
+import { useProfilePhotoStore } from '../stores/profilePhotoStore'
+import { useBudgetStore } from '../stores/useBudgetStore'
+import type { NotificationSettingsState } from '../types/profile'
+import { resizeImage } from '../utils/image'
 
 export const useProfile = () => {
-  const profile = useBudgetStore((s) => s.profile);
-  const notifications = useBudgetStore((s) => s.notifications);
-  const updateProfile = useBudgetStore((s) => s.updateProfile);
-  const toggleNotification = useBudgetStore((s) => s.toggleNotification);
-  const toastMessage = useBudgetStore((s) => s.toastMessage);
-  const clearToast = useBudgetStore((s) => s.clearToast);
+  const user = useAuthStore((s) => s.user)
+  const token = useAuthStore((s) => s.token)
+  const setUser = useAuthStore((s) => s.setUser)
 
-  const [name, setName] = useState<string>(profile.name);
-  const [email, setEmail] = useState<string>(profile.email);
-  const [password, setPassword] = useState<string>('•••••••••');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const photoUrl = useProfilePhotoStore((s) =>
+    user ? (s.photos[user.email] ?? null) : null,
+  )
+  const setPhoto = useProfilePhotoStore((s) => s.setPhoto)
 
-  const togglePasswordVisibility = useCallback(() => {
-    setShowPassword((prev) => !prev);
-  }, []);
+  // TODO: tanggal bergabung belum ada di data user dari BE, sementara dari mock
+  const joinedDate = useBudgetStore((s) => s.profile.joinedDate)
+  const notifications = useBudgetStore((s) => s.notifications)
+  const toggleNotification = useBudgetStore((s) => s.toggleNotification)
 
-  const handleSaveProfile = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      const validName = name.trim();
-      const validEmail = email.trim();
-
-      if (!validName) {
-        setFeedback('Nama tidak boleh kosong');
-        return;
-      }
-
-      if (!validEmail) {
-        setFeedback('Email tidak boleh kosong');
-        return;
-      }
-
-      setFeedback(null);
-      updateProfile({
-        name: validName,
-        email: validEmail,
-        avatarLetter: validName.charAt(0).toUpperCase(),
-      });
-    },
-    [name, email, updateProfile]
-  );
+  // setelah refresh halaman, user di store kosong; ambil ulang dari /me
+  useEffect(() => {
+    if (token && !user) {
+      getMe()
+        .then(setUser)
+        .catch(() => {})
+    }
+  }, [token, user, setUser])
 
   const handleToggle = useCallback(
     (key: keyof NotificationSettingsState) => {
-      toggleNotification(key);
+      toggleNotification(key)
     },
-    [toggleNotification]
-  );
+    [toggleNotification],
+  )
+
+  // TODO: kirim ke BE; sementara hanya mengubah data di store
+  const handleNameChange = useCallback(
+    (name: string) => {
+      if (user) setUser({ ...user, name })
+    },
+    [user, setUser],
+  )
+
+  // TODO: upload ke BE; sementara disimpan di browser
+  const handlePhotoChange = useCallback(
+    async (file: File) => {
+      if (!user) return
+      try {
+        setPhoto(user.email, await resizeImage(file))
+      } catch {
+        alert('Foto gagal diproses, coba pilih foto lain')
+      }
+    },
+    [user, setPhoto],
+  )
 
   return {
-    profile,
+    name: user?.name ?? '',
+    email: user?.email ?? '',
+    joinedDate,
     notifications,
-    name,
-    email,
-    password,
-    showPassword,
-    feedback,
-    toastMessage,
-    setName,
-    setEmail,
-    setPassword,
-    togglePasswordVisibility,
-    handleSaveProfile,
+    photoUrl,
     handleToggle,
-    clearToast,
-  };
-};
+    handleNameChange,
+    handlePhotoChange,
+  }
+}
