@@ -4,9 +4,10 @@ import { formatRupiah } from '../../../utils/format'
 
 interface Props {
   deposits: SavingsDeposit[]
+  onAddTarget: () => void
 }
 
-const SavingsRecentDeposits = ({ deposits }: Props) => (
+const SavingsRecentDeposits = ({ deposits, onAddTarget }: Props) => (
   <section className="flex flex-col rounded-3xl bg-white p-6 shadow-sm">
     <div className="flex items-baseline justify-between">
       <h2 className="text-lg font-medium text-gray-900">Setoran terakhir</h2>
@@ -42,11 +43,11 @@ const SavingsRecentDeposits = ({ deposits }: Props) => (
 
     <button
       type="button"
-      // TODO: buka modal/halaman Target baru
-      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0F1F17] py-3.5 text-sm font-medium text-white hover:bg-black"
+      onClick={onAddTarget}
+      className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#0B3B24] py-3.5 text-sm font-medium text-white hover:bg-[#0F4A2E]"
     >
       <Plus size={16} />
-      Target baru
+      Tambah Target
     </button>
   </section>
 )
