@@ -1,53 +1,22 @@
-import { useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { NotificationItem } from '../features/notifications/components/NotificationItem'
-import {
-  useNotificationStore,
-  type AppNotification,
-} from '../stores/notificationStore'
-
-const filters: { label: string; match: (n: AppNotification) => boolean }[] = [
-  { label: 'Semua', match: () => true },
-  { label: 'Belum dibaca', match: (n) => !n.read },
-  { label: 'Masa Tunda', match: (n) => n.type.startsWith('delay') },
-  { label: 'Saldo', match: (n) => n.type === 'balance' },
-  { label: 'Transaksi', match: (n) => n.type === 'transaction' },
-]
-
-const groups = [
-  { label: 'Hari ini', min: 0, max: 0 },
-  { label: 'Kemarin', min: 1, max: 1 },
-  { label: 'Minggu ini', min: 2, max: 6 },
-  { label: 'Minggu lalu', min: 7, max: 13 },
-  { label: 'Lebih lama', min: 14, max: Infinity },
-]
+import { useNotificationsPage } from '../features/notifications/hooks/useNotificationsPage'
+import { formatToday } from '../utils/format'
 
 const Notifications = () => {
-  const navigate = useNavigate()
-  const items = useNotificationStore((s) => s.items)
-  const markAllAsRead = useNotificationStore((s) => s.markAllAsRead)
-  const [active, setActive] = useState('Semua')
-
-  const unread = items.filter((n) => !n.read).length
-  const filtered = items.filter(filters.find((f) => f.label === active)!.match)
-  const today = new Date().toLocaleDateString('id-ID', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const { tabs, sections, unread, setActive, markAllAsRead, goBack } =
+    useNotificationsPage()
 
   return (
     <div className="flex flex-col gap-4">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs text-gray-500">{today}</p>
+          <p className="text-xs text-gray-500">{formatToday()}</p>
           <div className="flex items-center gap-3">
             <button
               type="button"
               aria-label="Kembali"
-              onClick={() => navigate(-1)}
+              onClick={goBack}
               className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm"
             >
               <ChevronLeft size={18} />
@@ -66,42 +35,37 @@ const Notifications = () => {
       </header>
 
       <div className="flex flex-wrap gap-2">
-        {filters.map((f) => (
+        {tabs.map((tab) => (
           <button
-            key={f.label}
+            key={tab.label}
             type="button"
-            aria-pressed={active === f.label}
-            onClick={() => setActive(f.label)}
+            aria-pressed={tab.isActive}
+            onClick={() => setActive(tab.label)}
             className={`cursor-pointer rounded-full px-4 py-2 text-xs font-medium ring-1 ${
-              active === f.label
+              tab.isActive
                 ? 'bg-[#0B3B24] text-white ring-[#0B3B24]'
                 : 'bg-white text-gray-700 ring-gray-200'
             }`}
           >
-            {f.label}
-            {f.label === 'Belum dibaca' && ` (${unread})`}
+            {tab.text}
           </button>
         ))}
       </div>
 
-      {groups.map((group) => {
-        const list = filtered.filter((n) => n.daysAgo >= group.min && n.daysAgo <= group.max)
-        if (list.length === 0) return null
-        return (
-          <section key={group.label}>
-            <h2 className="mb-2 text-[11px] font-semibold uppercase text-gray-500">
-              {group.label}
-            </h2>
-            <div className="flex flex-col gap-1 rounded-2xl bg-white p-2 shadow-sm">
-              {list.map((item) => (
-                <NotificationItem key={item.id} item={item} removable />
-              ))}
-            </div>
-          </section>
-        )
-      })}
+      {sections.map((section) => (
+        <section key={section.label}>
+          <h2 className="mb-2 text-[11px] font-semibold uppercase text-gray-500">
+            {section.label}
+          </h2>
+          <div className="flex flex-col gap-1 rounded-2xl bg-white p-2 shadow-sm">
+            {section.items.map((item) => (
+              <NotificationItem key={item.id} item={item} removable />
+            ))}
+          </div>
+        </section>
+      ))}
 
-      {filtered.length === 0 && (
+      {sections.length === 0 && (
         <p className="py-10 text-center text-sm text-gray-500">Tidak ada notifikasi</p>
       )}
     </div>
