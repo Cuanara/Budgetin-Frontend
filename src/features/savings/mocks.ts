@@ -1,7 +1,7 @@
 import type { SavingsDeposit, SavingsGoal } from '../../types/savings'
 
 export const SAVINGS_GOALS_MOCK: SavingsGoal[] = [
-  { id: '1', name: 'Dana Darurat', saved: 6000000, target: 10000000, icon: 'shield' },
+  { id: '1', name: 'Dana Darurat', saved: 6000000, target: 0, icon: 'shield' },
   { id: '2', name: 'Liburan Bali', saved: 1800000, target: 4000000, icon: 'plane' },
   { id: '3', name: 'Dana Pendidikan', saved: 650000, target: 5000000, icon: 'graduation' },
   { id: '4', name: 'Hadiah Ulang Tahun', saved: 2000000, target: 2000000, icon: 'gift' },

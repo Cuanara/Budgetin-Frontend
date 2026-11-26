@@ -18,6 +18,7 @@ import Budget from '../pages/Budget'
 import Profile from '../pages/Profile'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
+import Transactions from '../pages/Transactions'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Landing /> },
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
           { path: '/wishlist/archive', element: <WishlistArchive /> },
           { path: '/profile', element: <Profile /> },
           { path: '/notifikasi', element: <Notifications /> },
+          { path: '/transactions', element: <Transactions /> },
         ],
       },
     ],

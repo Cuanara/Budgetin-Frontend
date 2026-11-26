@@ -11,6 +11,7 @@ export interface Transaction {
   date: string;
   notes?: string;
   icon?: string;
+  createdAt?: string; // ISO, waktu transaksi dicatat
 }
 
 export interface CreateTransactionDto {

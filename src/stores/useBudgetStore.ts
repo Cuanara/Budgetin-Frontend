@@ -20,6 +20,7 @@ interface BudgetState {
   showToast: (message: string) => void;
   clearToast: () => void;
   addTransaction: (dto: CreateTransactionDto) => void;
+  removeTransaction: (id: string) => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
   toggleNotification: (key: keyof NotificationSettingsState) => void;
 }
@@ -67,6 +68,7 @@ export const useBudgetStore = create<BudgetState>((set) => ({
       date: '2026-11-12',
       notes: 'Makan siang',
       icon: 'M',
+      createdAt: '2026-11-12T12:41:00',
     },
     {
       id: 'tx-2',
@@ -79,6 +81,7 @@ export const useBudgetStore = create<BudgetState>((set) => ({
       date: '2026-11-11',
       notes: 'Bonus insentif',
       icon: '+',
+      createdAt: '2026-11-11T09:15:00',
     },
     {
       id: 'tx-3',
@@ -90,6 +93,7 @@ export const useBudgetStore = create<BudgetState>((set) => ({
       date: '2026-11-10',
       notes: 'Boba drink',
       icon: 'J',
+      createdAt: '2026-11-10T16:20:00',
     },
   ],
   isTransactionModalOpen: false,
@@ -109,6 +113,7 @@ export const useBudgetStore = create<BudgetState>((set) => ({
         id: `tx-${Date.now()}`,
         ...dto,
         icon: dto.type === 'income' ? '+' : dto.category.charAt(0).toUpperCase(),
+        createdAt: new Date().toISOString(),
       };
 
       const isExpense = dto.type === 'expense';
@@ -136,6 +141,32 @@ export const useBudgetStore = create<BudgetState>((set) => ({
           monthlyBudgetPercent: updatedPercent,
         },
         toastMessage: 'Transaksi berhasil disimpan!',
+      };
+    }),
+
+  // hapus transaksi dan kembalikan pengaruhnya ke ringkasan
+  removeTransaction: (id) =>
+    set((state) => {
+      const tx = state.transactions.find((t) => t.id === id);
+      if (!tx) return state;
+
+      const expense = tx.type === 'expense' ? tx.amount : 0;
+      const income = tx.type === 'income' ? tx.amount : 0;
+      const spent = Math.max(0, state.summary.monthlyBudgetSpent - expense);
+
+      return {
+        transactions: state.transactions.filter((t) => t.id !== id),
+        summary: {
+          ...state.summary,
+          currentBalance: state.summary.currentBalance + expense - income,
+          monthlyExpense: Math.max(0, state.summary.monthlyExpense - expense),
+          monthlyBudgetSpent: spent,
+          monthlyBudgetPercent: Math.min(
+            100,
+            Math.round((spent / state.summary.monthlyBudgetLimit) * 100)
+          ),
+        },
+        toastMessage: 'Transaksi berhasil dihapus!',
       };
     }),
 
