@@ -1,3 +1,6 @@
+import { User as UserIcon } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { NAV_ITEMS } from '../../constants/navigation'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useAuthStore } from '../../stores/authStore'
 import { useProfilePhotoStore } from '../../stores/profilePhotoStore'
@@ -8,11 +11,19 @@ interface Props {
 }
 
 const PageHeader = ({ title }: Props) => {
+  const { pathname } = useLocation()
   const user = useAuthStore((s) => s.user)
   const photoUrl = useProfilePhotoStore((s) =>
     user ? (s.photos[user.email] ?? null) : null,
   )
   const name = user?.name ?? ''
+
+  // sub-halaman (mis. /wishlist/archive) ikut ikon menu induknya
+  const navItem = NAV_ITEMS.find(
+    ({ path }) => pathname === path || pathname.startsWith(`${path}/`),
+  )
+  // Profile tidak ada di menu sidebar, jadi pakai ikon user
+  const Icon = navItem?.icon ?? (pathname === '/profile' ? UserIcon : null)
 
   return (
     <header>
@@ -37,7 +48,10 @@ const PageHeader = ({ title }: Props) => {
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-gray-500">{formatToday()}</p>
-          <h1 className="text-3xl font-semibold text-[#0B3B24]">{title}</h1>
+          <h1 className="flex items-center gap-2.5 text-3xl font-semibold text-[#0B3B24]">
+            {Icon && <Icon size={28} aria-hidden="true" className="shrink-0" />}
+            {title}
+          </h1>
         </div>
         {/* Desktop saja: bell tetap di kanan seperti sebelumnya */}
         <div className="hidden md:block">
