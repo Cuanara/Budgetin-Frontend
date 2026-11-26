@@ -4,12 +4,9 @@ import type { AuthResponse, LoginPayload, RegisterPayload, User } from '../types
 import { getDeviceName } from '../utils/device'
 import { ApiError, apiClient } from './apiClient'
 
-export class OtpInvalidError extends Error {}
 export class EmailNotVerifiedError extends Error {}
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const MOCK_OTP = '123456'
 
 const toUser = (u: ApiUser): User => ({ name: u.name, email: u.email })
 
@@ -60,8 +57,22 @@ export async function logout(): Promise<void> {
   await apiClient<null>(API_PATHS.logout, { method: 'POST' })
 }
 
-// Path sementara. Samakan dengan route Laravel, atau pindahkan ke API_PATHS
-// kalau kamu mau (aku belum lihat constants/api.ts).
+export async function verifyOtp(email: string, code: string): Promise<void> {
+  await apiClient<ApiUser>(API_PATHS.verifyOtp, {
+    method: 'POST',
+    body: JSON.stringify({ email, otp: code }),
+  })
+}
+
+export async function resendOtp(email: string): Promise<void> {
+  await apiClient<null>(API_PATHS.resendOtp, {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  })
+}
+
+// ---- MOCK di bawah ini tetap, belum ada endpoint BE-nya ----
+
 export type ResetPasswordPayload = {
   email: string
   token: string
@@ -81,20 +92,4 @@ export async function resetPassword(payload: ResetPasswordPayload): Promise<void
   if (!payload.token || !payload.email) {
     throw new ApiError(422, 'Tautan tidak valid')
   }
-}
-
-// ---- MOCK di bawah ini tetap, belum ada endpoint BE-nya ----
-
-// MOCK: kode benar = 123456. Nanti ganti ke endpoint OTP dari BE
-export async function verifyOtp(email: string, code: string): Promise<void> {
-  await sleep(800)
-  if (!email || code !== MOCK_OTP) {
-    throw new OtpInvalidError('Kode salah. Coba lagi.')
-  }
-}
-
-// MOCK: nanti ganti ke endpoint resend OTP dari BE
-export async function resendOtp(email: string): Promise<void> {
-  await sleep(600)
-  if (!email) throw new Error('Email tidak ditemukan')
 }

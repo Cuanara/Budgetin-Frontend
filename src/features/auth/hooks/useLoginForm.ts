@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ApiError } from '../../../services/apiClient'
-import { EmailNotVerifiedError, login } from '../../../services/authService'
+import { EmailNotVerifiedError, login, resendOtp } from '../../../services/authService'
 import { useAuthStore } from '../../../stores/authStore'
 import {
   clearRememberedEmail,
@@ -44,9 +44,17 @@ export function useLoginForm() {
       navigate('/dashboard', { replace: true })
     } catch (err) {
       if (err instanceof EmailNotVerifiedError) {
-        // TODO: arahkan ke /verifikasi-otp setelah BE punya endpoint OTP
-        setServerError('Email kamu belum diverifikasi.')
-      } else if (err instanceof ApiError && err.status === 401) {
+        // kirim OTP baru dulu; kalau gagal (mis. kena jeda 60 detik), tetap lanjut ke halaman OTP
+        try {
+          await resendOtp(values.email)
+        } catch {
+          /* abaikan */
+        }
+        navigate('/verifikasi-otp', { state: { email: values.email } })
+        return
+      }
+
+      if (err instanceof ApiError && err.status === 401) {
         setServerError('Email atau password salah. Coba lagi')
       } else if (err instanceof ApiError) {
         setServerError(err.message)
