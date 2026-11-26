@@ -16,6 +16,7 @@ interface SavingsState {
   monthlyGain: number
   depositGoalId: string | null
   depositResult: SavingsDepositResult | null
+  addGoal: (name: string, target: number) => void
   openDeposit: (goalId: string) => void
   closeDeposit: () => void
   deposit: (goalId: string, amount: number) => void
@@ -30,6 +31,15 @@ export const useSavingsStore = create<SavingsState>((set) => ({
   monthlyGain: SAVINGS_MONTHLY_GAIN_MOCK,
   depositGoalId: null,
   depositResult: null,
+  // target 0 = tanpa target; setelah ditambah langsung buka modal setoran
+  addGoal: (name, target) =>
+    set((s) => {
+      const id = crypto.randomUUID()
+      return {
+        goals: [...s.goals, { id, name, target, saved: 0, icon: 'gift' as const }],
+        depositGoalId: id,
+      }
+    }),
   openDeposit: (goalId) => set({ depositGoalId: goalId }),
   closeDeposit: () => set({ depositGoalId: null }),
   deposit: (goalId, amount) =>
