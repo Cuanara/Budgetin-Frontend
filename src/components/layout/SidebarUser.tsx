@@ -3,10 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../features/auth/hooks/useLogout'
 import { useAuthStore } from '../../stores/authStore'
+import { useProfilePhotoStore } from '../../stores/profilePhotoStore'
 import { LogoutModal } from '../LogoutModal'
 
 const SidebarUser = () => {
   const user = useAuthStore((s) => s.user)
+  const photoUrl = useProfilePhotoStore((s) =>
+    user ? (s.photos[user.email] ?? null) : null,
+  )
   const navigate = useNavigate()
   const logout = useLogout()
 
@@ -87,8 +91,12 @@ const SidebarUser = () => {
           aria-expanded={menuOpen}
           className="flex w-full cursor-pointer items-center gap-3 rounded-2xl bg-emerald-50 p-3 text-left transition-colors hover:bg-emerald-100"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-medium uppercase text-[#0B3B24]">
-            {name.charAt(0)}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-emerald-100 font-medium uppercase text-[#0B3B24]">
+            {photoUrl ? (
+              <img src={photoUrl} alt="" className="size-full object-cover" />
+            ) : (
+              name.charAt(0)
+            )}
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium">{name}</p>
