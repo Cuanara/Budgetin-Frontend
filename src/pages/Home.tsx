@@ -1,3 +1,4 @@
+
 import { Plus } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
 import Toast from '../components/ui/Toast'
@@ -21,7 +22,7 @@ const Home = () => {
   } = useDashboardPage()
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:gap-6">
+    <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-6">
       <PageHeader
         title="Beranda"
         action={
@@ -38,14 +39,16 @@ const Home = () => {
 
       <SummaryCards summary={summary} />
 
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <div className="grid w-full min-w-0 grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+        <div className="min-w-0 lg:col-span-2">
           <YearlyExpenseChart reports={yearlyReports} />
         </div>
 
-        <aside className="flex flex-col justify-between gap-6 rounded-3xl bg-white p-4 shadow-sm sm:p-6">
+        <aside className="flex min-w-0 flex-col justify-between gap-6 rounded-3xl bg-white p-4 shadow-sm sm:p-6">
           <MonthlyGaugeCard summary={summary} />
+
           <div className="h-px bg-gray-100" />
+
           <RecentTransactions transactions={transactions} />
         </aside>
       </div>
@@ -55,7 +58,9 @@ const Home = () => {
         onClose={closeTransactionModal}
       />
 
-      {toastMessage && <Toast message={toastMessage} onClose={clearToast} />}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={clearToast} />
+      )}
     </div>
   )
 }
