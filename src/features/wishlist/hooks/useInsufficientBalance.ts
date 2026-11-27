@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { SAVING_SUGGEST_DAYS } from '../../../constants/wishlist'
 import { useBalanceStore } from '../../../stores/balanceStore'
 import { useWishlistStore } from '../../../stores/wishlistStore'
-import { requestNotifyPermission } from '../../../utils/notification'
 import { getBalancePercent, getSavingPerDay } from '../../../utils/wishlist'
 
 export const useInsufficientBalance = () => {
@@ -10,31 +9,35 @@ export const useInsufficientBalance = () => {
     s.allItems.find((i) => i.id === s.insufficientId),
   )
   const startSaving = useWishlistStore((s) => s.startSaving)
+  const decide = useWishlistStore((s) => s.decide)
   const balance = useBalanceStore((s) => s.balance)
   const [notify, setNotify] = useState(true)
 
-  const price = item?.price ?? 0
-  const shortfall = Math.max(0, price - balance)
+  const shortfall = item ? Math.max(0, item.price - balance) : 0
+  const percent = item ? getBalancePercent(balance, item.price) : 0
+  const days = SAVING_SUGGEST_DAYS
+  const perDay = getSavingPerDay(shortfall, days)
 
-  const toggleNotify = () => setNotify((prev) => !prev)
+  // "Masukkan wishlist pada tabungan"
+  const confirm = () => {
+    if (item) startSaving(item.id, notify)
+  }
 
-  const confirm = async () => {
-    if (!item) return
-    // izin notifikasi harus diminta dari klik user
-    const allowed = notify ? await requestNotifyPermission() : false
-    // TODO: simpan preferensi ke BE
-    startSaving(item.id, allowed)
+  // "Batal diwujudkan": wishlist masuk arsip
+  const cancel = () => {
+    if (item) decide(item.id, 'cancelled')
   }
 
   return {
     item,
     balance,
     shortfall,
-    percent: getBalancePercent(balance, price),
-    perDay: getSavingPerDay(shortfall, SAVING_SUGGEST_DAYS),
-    days: SAVING_SUGGEST_DAYS,
+    percent,
+    perDay,
+    days,
     notify,
-    toggleNotify,
+    toggleNotify: () => setNotify((v) => !v),
     confirm,
+    cancel,
   }
 }

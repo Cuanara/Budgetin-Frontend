@@ -1,10 +1,9 @@
-
 import { ArrowDownUp, Search, SlidersHorizontal } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 export type WishlistFilter = 'all' | 'running' | 'done'
-export type WishlistSort = 'newest' | 'priceDesc' | 'priceAsc' | 'daysLeft'
+export type WishlistSort = 'smallest' | 'largest' | 'oldest' | 'newest'
 
 const FILTER_OPTIONS: { value: WishlistFilter; label: string }[] = [
   { value: 'all', label: 'Semua' },
@@ -13,10 +12,10 @@ const FILTER_OPTIONS: { value: WishlistFilter; label: string }[] = [
 ]
 
 const SORT_OPTIONS: { value: WishlistSort; label: string }[] = [
+  { value: 'smallest', label: 'Budget Terkecil' },
+  { value: 'largest', label: 'Budget Terbesar' },
+  { value: 'oldest', label: 'Terlama' },
   { value: 'newest', label: 'Terbaru' },
-  { value: 'priceDesc', label: 'Harga tertinggi' },
-  { value: 'priceAsc', label: 'Harga terendah' },
-  { value: 'daysLeft', label: 'Sisa masa tunda tersingkat' },
 ]
 
 interface MenuProps<T extends string> {

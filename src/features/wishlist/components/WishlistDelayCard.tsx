@@ -12,31 +12,31 @@ const WishlistDelayCard = ({ item }: Props) => {
   const filled = Math.min(item.delayDays, Math.max(0, item.dayElapsed))
 
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
-      <h3 className="text-lg font-semibold text-[#0B3B24]">Masa tunda</h3>
+    <section className="h-full rounded-2xl bg-white p-6 shadow-sm">
+      <h3 className="text-sm font-bold text-[#0B3B24]">Masa tunda</h3>
 
-      <div className="mt-4 flex gap-1.5" aria-hidden>
+      <div className="mt-3 flex gap-1.5" aria-hidden>
         {Array.from({ length: item.delayDays }, (_, i) => (
           <span
             key={i}
-            className={`h-2.5 flex-1 rounded-full ${
+            className={`h-1.5 flex-1 rounded-full ${
               i < filled ? 'bg-emerald-500' : 'bg-emerald-100'
             }`}
           />
         ))}
       </div>
 
-      <p className="mt-3 text-sm text-gray-700">
+      <p className="mt-2 text-[11px] text-gray-800">
         {daysLeft > 0 ? (
           <>
             <strong>Sisa {daysLeft} hari.</strong>
-            {endDate && ` Bisa dibeli mulai ${endDate}.`}
+            {endDate && ` Berakhir pada ${endDate}.`}
           </>
         ) : (
           <strong>Masa tunda sudah berakhir.</strong>
         )}
       </p>
-      <p className="mt-3 text-xs leading-relaxed text-gray-500">
+      <p className="mt-2 text-[10px] leading-relaxed text-gray-600">
         Masa tunda membantu memastikan barang ini memang kamu butuhkan, bukan
         sekadar belanja impulsif.
       </p>

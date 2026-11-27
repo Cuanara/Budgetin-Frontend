@@ -17,30 +17,34 @@ const WishlistDetailSummary = ({ item }: Props) => {
   const ready = isReady(item)
 
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="rounded-2xl bg-white p-6 shadow-sm">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-3xl font-semibold text-[#0B3B24]">{item.name}</h2>
+        <div className="min-w-0">
+          <h2 className="truncate text-xl font-bold text-[#0B3B24]">
+            {item.name}
+          </h2>
           {item.createdAt && (
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-0.5 text-[11px] text-gray-600">
               Ditambahkan {formatShortDate(item.createdAt)}
             </p>
           )}
         </div>
         <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
-            ready ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+          className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-medium ${
+            ready
+              ? 'bg-emerald-100 text-emerald-800'
+              : 'bg-amber-100 text-amber-800'
           }`}
         >
           {getStatusText(item)}
         </span>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-4xl font-semibold text-[#0B3B24]">
+      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-2xl font-bold text-[#0B3B24]">
           {formatRupiah(item.saved)}
         </p>
-        <p className="text-sm text-gray-500">
+        <p className="text-[11px] text-gray-600">
           terkumpul dari {formatRupiah(item.price)}
         </p>
       </div>
@@ -50,7 +54,7 @@ const WishlistDetailSummary = ({ item }: Props) => {
         aria-valuenow={percent}
         aria-valuemin={0}
         aria-valuemax={100}
-        className="mt-3 h-3 w-full rounded-full bg-emerald-50"
+        className="mt-2 h-2.5 w-full rounded-full bg-emerald-100"
       >
         <div
           className="h-full rounded-full bg-emerald-500"
@@ -58,9 +62,9 @@ const WishlistDetailSummary = ({ item }: Props) => {
         />
       </div>
 
-      <div className="mt-2 flex justify-between text-sm">
+      <div className="mt-1.5 flex justify-between text-[11px]">
         <span className="font-medium text-gray-900">{percent}%</span>
-        <span className="text-gray-500">
+        <span className="text-gray-600">
           Kurang {formatRupiah(getShortfall(item))}
         </span>
       </div>

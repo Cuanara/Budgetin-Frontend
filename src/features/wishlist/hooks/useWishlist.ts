@@ -37,12 +37,13 @@ export const useWishlist = () => {
   const closeReminder = () => setIsReminderOpen(false)
 
   const addItem = (values: WishlistFormValues) => {
-    // TODO: ganti dengan POST ke BE; price & saved nanti dari response
+    // TODO: ganti dengan POST ke BE; saved nanti dari response
     add({
       id: crypto.randomUUID(),
       name: values.name,
       link: normalizeLink(values.link),
-      price: 0,
+      category: values.category,
+      price: values.price,
       saved: 0,
       delayDays: values.delayDays,
       dayElapsed: 0,

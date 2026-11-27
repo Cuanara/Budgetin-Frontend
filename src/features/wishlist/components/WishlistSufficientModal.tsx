@@ -11,33 +11,33 @@ const WishlistSufficientModal = () => {
   return (
     <Modal open labelledBy="sufficient-title">
       <div className="flex flex-col items-center text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-          <Check size={28} />
+        <div className="flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+          <Check size={24} />
         </div>
         <h2
           id="sufficient-title"
-          className="mt-5 text-3xl font-semibold text-[#0F1F17]"
+          className="mt-4 text-2xl font-semibold text-[#0F1F17]"
         >
           Saldo kamu cukup!
         </h2>
-        <p className="mt-2 text-gray-500">
-          Barang ini bisa langsung dibeli dari tabunganmu.
+        <p className="mt-2 text-xs text-gray-600">
+          Wishlist {item.name} ini bisa langsung terwujud.
         </p>
       </div>
 
-      <div className="mt-6 flex items-center gap-4 rounded-2xl bg-[#F3F8F4] p-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-lg font-medium text-[#0B3B24]">
+      <div className="mt-5 flex items-center gap-3 rounded-2xl bg-[#F3F8F4] p-3">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-sm font-medium text-[#0B3B24]">
           {item.name.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0">
-          <p className="truncate font-medium">{item.name}</p>
-          <p className="text-sm text-gray-500">
+          <p className="truncate text-sm font-medium">{item.name}</p>
+          <p className="text-[11px] text-gray-600">
             Harga {formatRupiah(item.price)}
           </p>
         </div>
       </div>
 
-      <dl className="mt-5 space-y-1.5 text-sm">
+      <dl className="mt-4 space-y-1.5 text-xs">
         <div className="flex justify-between">
           <dt className="text-gray-600">Saldo tabungan</dt>
           <dd className="font-medium">{formatRupiah(balance)}</dd>
@@ -53,14 +53,14 @@ const WishlistSufficientModal = () => {
       <button
         type="button"
         onClick={buy}
-        className="mt-6 w-full rounded-full bg-[#0F1F17] py-4 text-base font-medium text-white"
+        className="mt-5 w-full cursor-pointer rounded-full bg-[#0F1F17] py-3.5 text-sm font-medium text-white transition-colors hover:bg-black"
       >
         Arahkan ke Link Pembelian
       </button>
       <button
         type="button"
         onClick={later}
-        className="mt-3 w-full py-2 text-sm text-gray-600 hover:text-gray-900"
+        className="mt-2 w-full cursor-pointer py-2 text-xs text-gray-700 hover:text-gray-900"
       >
         Nanti dulu
       </button>

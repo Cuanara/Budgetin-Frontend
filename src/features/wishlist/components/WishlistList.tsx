@@ -3,23 +3,25 @@ import WishlistListItem from './WishlistListItem'
 
 interface Props {
   items: WishlistItem[]
+  isFiltered?: boolean
 }
 
-const WishlistList = ({ items }: Props) => (
-  <section>
-    <h2 className="mb-4 text-2xl font-medium">Wishlist kamu</h2>
-    {items.length === 0 ? (
+const WishlistList = ({ items, isFiltered = false }: Props) => {
+  if (items.length === 0) {
+    return (
       <div className="rounded-3xl bg-white p-8 text-center text-sm text-gray-500 shadow-sm">
-        Belum ada wishlist.
+        {isFiltered ? 'Wishlist tidak ditemukan.' : 'Belum ada wishlist.'}
       </div>
-    ) : (
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,420px),1fr))] items-start gap-5">
-        {items.map((item) => (
-          <WishlistListItem key={item.id} item={item} />
-        ))}
-      </ul>
-    )}
-  </section>
-)
+    )
+  }
+
+  return (
+    <ul className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {items.map((item) => (
+        <WishlistListItem key={item.id} item={item} />
+      ))}
+    </ul>
+  )
+}
 
 export default WishlistList
