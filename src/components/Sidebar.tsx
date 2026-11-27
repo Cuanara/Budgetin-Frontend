@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import React, { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { X } from 'lucide-react'
 import {
-  LogoIcon,
   HomeIcon,
   WishlistIcon,
   BudgetIcon,
@@ -9,132 +10,224 @@ import {
   HistoryIcon,
   SettingsIcon,
   LogoutIcon,
-} from './icons';
-import type { UserProfile } from '../types/profile';
+} from './icons'
+import type { UserProfile } from '../types/profile'
 
 interface SidebarProps {
-  profile: UserProfile;
-  onOpenLogoutModal: () => void;
+  profile: UserProfile & {
+    photoUrl?: string | null
+  }
+  isOpen: boolean
+  onClose: () => void
+  onOpenLogoutModal: () => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   profile,
+  isOpen,
+  onClose,
   onOpenLogoutModal,
 }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  const isHomeActive = location.pathname === '/';
-  const isProfileActive = location.pathname === '/profile';
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false)
+
+  const isHomeActive = location.pathname === '/dashboard'
+  const isWishlistActive = location.pathname.startsWith('/wishlist')
+  const isBudgetActive = location.pathname.startsWith('/budget')
+  const isSavingsActive = location.pathname.startsWith('/savings')
+  const isTransactionsActive = location.pathname.startsWith('/transactions')
+  const isProfileActive = location.pathname === '/profile'
+
+  const menuItemClass = (active: boolean) =>
+    `flex w-full items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+      active
+        ? 'bg-[#185C3B] text-white font-semibold shadow-sm'
+        : 'text-[#26382D] font-medium hover:bg-[#EEF5F0] hover:text-[#185C3B]'
+    }`
 
   const handleProfileClick = () => {
-    navigate('/profile');
-  };
+    setIsAccountMenuOpen((previous) => !previous)
+  }
+
+  const handleProfileSettings = () => {
+    setIsAccountMenuOpen(false)
+    onClose()
+    navigate('/profile')
+  }
+
+  const handleLogout = () => {
+    setIsAccountMenuOpen(false)
+    onClose()
+    onOpenLogoutModal()
+  }
 
   return (
-    <aside className="w-64 bg-[#082117] min-h-screen border-r border-[#133D29] flex flex-col justify-between p-6 select-none shadow-[2px_0_16px_rgba(0,0,0,0.3)] shrink-0">
-      {/* Top Branding and Navigation */}
-      <div className="space-y-8">
-        {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 px-2 group">
-          <LogoIcon className="w-8 h-8 transform group-hover:scale-105 transition-transform" />
-          <span className="text-2xl font-bold tracking-tight text-white">Budgetin</span>
-        </Link>
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div
+          role="presentation"
+          onClick={onClose}
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] transition-opacity md:hidden"
+        />
+      )}
 
-        {/* Navigation Menu */}
-        <nav className="space-y-2">
-          {/* Beranda Link */}
-          <Link
-            to="/"
-            className={`flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-semibold transition-all ${isHomeActive
-              ? 'bg-[#13402C] text-white shadow-md shadow-black/20'
-              : 'text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white'
-              }`}
-          >
-            <HomeIcon className={`w-5 h-5 ${isHomeActive ? 'text-white' : 'text-[#8EAFA0]'}`} />
-            <span>Beranda</span>
-          </Link>
+      {/* Sidebar Container */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col justify-between border-r border-[#E5EDE7] bg-white p-5 shadow-[2px_0_12px_rgba(0,0,0,0.05)] select-none transition-transform duration-300 ease-in-out md:static md:translate-x-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Branding and Navigation */}
+        <div className="space-y-7">
 
-          {/* Wishlist Button */}
-          <button
-            type="button"
-            className="w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-medium text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white transition-colors cursor-pointer"
-          >
-            <WishlistIcon className="w-5 h-5 text-[#8EAFA0]" />
-            <span>Wishlist</span>
-          </button>
+          {/* Logo Budgetin Asli */}
+          <div className="flex items-center justify-between">
+            <Link
+              to="/dashboard"
+              onClick={onClose}
+              className="flex items-center px-2"
+            >
+              <img
+                src="/images/logo-dark.png"
+                alt="Budgetin"
+                className="h-auto w-[150px] object-contain"
+              />
+            </Link>
 
-          {/* Budget Button */}
-          <button
-            type="button"
-            className="w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-medium text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white transition-colors cursor-pointer"
-          >
-            <BudgetIcon className="w-5 h-5 text-[#8EAFA0]" />
-            <span>Budget</span>
-          </button>
-
-          {/* Tabungan Button */}
-          <button
-            type="button"
-            className="w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-medium text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white transition-colors cursor-pointer"
-          >
-            <SavingsIcon className="w-5 h-5 text-[#8EAFA0]" />
-            <span>Tabungan</span>
-          </button>
-
-          {/* Riwayat Transaksi Button */}
-          <button
-            type="button"
-            className="w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-medium text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white transition-colors cursor-pointer"
-          >
-            <HistoryIcon className="w-5 h-5 text-[#8EAFA0]" />
-            <span>Riwayat Transaksi</span>
-          </button>
-        </nav>
-      </div>
-
-      {/* Bottom User Area */}
-      <div className="space-y-2 pt-6">
-        {/* Pengaturan Akun Button */}
-        <button
-          type="button"
-          onClick={handleProfileClick}
-          className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-semibold transition-colors cursor-pointer ${isProfileActive
-            ? 'bg-[#13402C] text-white shadow-md'
-            : 'text-[#8EAFA0] hover:bg-[#0D2D20] hover:text-white'
-            }`}
-        >
-          <SettingsIcon className={`w-5 h-5 ${isProfileActive ? 'text-white' : 'text-[#8EAFA0]'}`} />
-          <span>Pengaturan Akun</span>
-        </button>
-
-        {/* Keluar Button */}
-        <button
-          type="button"
-          onClick={onOpenLogoutModal}
-          className="w-full flex items-center gap-3.5 px-4 py-3 rounded-full text-sm font-semibold text-[#EF4444] bg-[#2A1212] hover:bg-[#381616] border border-[#4E1E1E] transition-colors cursor-pointer"
-        >
-          <LogoutIcon className="w-5 h-5 text-[#EF4444]" />
-          <span>Keluar</span>
-        </button>
-
-        {/* Profile Nadia Card */}
-        <button
-          type="button"
-          onClick={handleProfileClick}
-          className="w-full flex items-center gap-3.5 p-3 rounded-2xl bg-[#0C2B1E] hover:bg-[#113828] border border-[#16432F] shadow-sm transition-all text-left group cursor-pointer"
-        >
-          <div className="w-10 h-10 rounded-full bg-[#22C55E] flex items-center justify-center text-[#062015] font-extrabold text-base shadow-inner">
-            {profile.avatarLetter}
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg p-1.5 text-[#647568] hover:bg-[#EEF5F0] hover:text-[#185C3B] md:hidden"
+              aria-label="Tutup Menu"
+            >
+              <X className="size-5" />
+            </button>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-white truncate group-hover:text-[#4ADE80]">
-              {profile.name}
+
+          {/* Navigation Menu */}
+          <nav className="space-y-1.5">
+            <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-[#738078]">
+              MENU
             </p>
-            <p className="text-xs text-[#8EAFA0] truncate">nadia@gmail.com</p>
-          </div>
-        </button>
-      </div>
-    </aside>
-  );
-};
+
+            <Link
+              to="/dashboard"
+              onClick={onClose}
+              className={menuItemClass(isHomeActive)}
+            >
+              <HomeIcon className="w-5 h-5" />
+              <span>Beranda</span>
+            </Link>
+
+            <Link
+              to="/wishlist"
+              onClick={onClose}
+              className={menuItemClass(isWishlistActive)}
+            >
+              <WishlistIcon className="w-5 h-5" />
+              <span>Wishlist</span>
+            </Link>
+
+            <Link
+              to="/budget"
+              onClick={onClose}
+              className={menuItemClass(isBudgetActive)}
+            >
+              <BudgetIcon className="w-5 h-5" />
+              <span>Budget</span>
+            </Link>
+
+            <Link
+              to="/savings"
+              onClick={onClose}
+              className={menuItemClass(isSavingsActive)}
+            >
+              <SavingsIcon className="w-5 h-5" />
+              <span>Tabungan</span>
+            </Link>
+
+            <Link
+              to="/transactions"
+              onClick={onClose}
+              className={menuItemClass(isTransactionsActive)}
+            >
+              <HistoryIcon className="w-5 h-5" />
+              <span>Riwayat Transaksi</span>
+            </Link>
+          </nav>
+        </div>
+
+        {/* Bottom User Area */}
+        <div className="space-y-2 pt-6">
+
+          {/* Pengaturan Akun dan Keluar */}
+          {isAccountMenuOpen && (
+            <div className="space-y-1.5">
+              <button
+                type="button"
+                onClick={handleProfileSettings}
+                className={`flex w-full items-center gap-3.5 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                  isProfileActive
+                    ? 'bg-[#E7F2EA] text-[#185C3B]'
+                    : 'text-[#26382D] hover:bg-[#EEF5F0]'
+                }`}
+              >
+                <SettingsIcon className="w-5 h-5" />
+                <span>Pengaturan Akun</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3.5 rounded-xl bg-[#FFF0EF] px-4 py-2.5 text-sm font-semibold text-[#E54848] transition-colors hover:bg-[#FFE5E3]"
+              >
+                <LogoutIcon className="w-5 h-5" />
+                <span>Keluar</span>
+              </button>
+            </div>
+          )}
+
+          {/* User Profile */}
+          <button
+            type="button"
+            onClick={handleProfileClick}
+            aria-expanded={isAccountMenuOpen}
+            className={`group flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-all ${
+              isAccountMenuOpen
+                ? 'border-[#CDE4D4] bg-[#F0F7F2]'
+                : 'border-[#E5EDE7] bg-[#F4F8F5] hover:bg-[#EAF3ED]'
+            }`}
+          >
+            {/* Profile Photo */}
+            {profile?.photoUrl ? (
+              <img
+                src={profile.photoUrl}
+                alt="Foto profil"
+                className="h-10 w-10 shrink-0 rounded-full border border-[#D1EBDD] object-cover"
+              />
+            ) : (
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D1EBDD] text-sm font-bold text-[#185C3B]">
+                {profile?.avatarLetter ||
+                  profile?.name?.trim().charAt(0).toUpperCase() ||
+                  'N'}
+              </div>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-[#26382D]">
+                {profile?.name || 'Pengguna'}
+              </p>
+
+              <p className="truncate text-xs text-[#829087]">
+                {profile?.email || ''}
+              </p>
+            </div>
+          </button>
+        </div>
+      </aside>
+    </>
+  )
+}

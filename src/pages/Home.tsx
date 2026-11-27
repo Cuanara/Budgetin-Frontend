@@ -21,14 +21,14 @@ const Home = () => {
   } = useDashboardPage()
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:gap-6">
       <PageHeader
         title="Beranda"
         action={
           <button
             type="button"
             onClick={openTransactionModal}
-            className="inline-flex h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-white transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-white transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto"
           >
             <Plus className="size-4" aria-hidden="true" />
             Tambah transaksi
@@ -38,12 +38,12 @@ const Home = () => {
 
       <SummaryCards summary={summary} />
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <YearlyExpenseChart reports={yearlyReports} />
         </div>
 
-        <aside className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm">
+        <aside className="flex flex-col justify-between gap-6 rounded-3xl bg-white p-4 shadow-sm sm:p-6">
           <MonthlyGaugeCard summary={summary} />
           <div className="h-px bg-gray-100" />
           <RecentTransactions transactions={transactions} />

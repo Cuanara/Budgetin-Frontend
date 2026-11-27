@@ -11,17 +11,18 @@ const Wishlist = () => {
   const page = useWishlistPage()
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex min-w-0 flex-col gap-4 sm:gap-5">
       <PageHeader title="Wishlist" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      {/* Tombol tambah dan tab */}
+      <div className="flex w-full items-center justify-between gap-3">
         <button
           type="button"
           onClick={page.openForm}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0F1F17] px-5 py-3 text-xs font-medium text-white transition-colors hover:bg-black"
+          aria-label="Tambah wishlist"
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#0B1720] text-white shadow-sm transition hover:bg-[#173D2B] sm:size-12"
         >
-          <Plus size={14} />
-          Tambah Wishlist
+          <Plus size={21} />
         </button>
 
         <WishlistTabs
@@ -30,45 +31,51 @@ const Wishlist = () => {
         />
       </div>
 
-      <section className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 rounded-2xl bg-[#0B3B24] px-6 py-4 text-white">
-        <div>
-          <p className="text-[11px]">Saldo Tabungan Wishlist</p>
-          <p className="text-3xl font-extrabold">
-            {formatRupiah(page.totalSaved)}
-          </p>
-        </div>
-        {page.totalShortfall > 0 && (
-          <p className="max-w-64 text-xs leading-snug sm:text-right">
-            Kamu masih perlu menabung {formatRupiah(page.totalShortfall)} lagi
-            untuk mencapai semua target wishlistmu
-          </p>
-        )}
-      </section>
-
+      {/* Reminder masa tunda */}
       {page.hasExpired && (
         <div
           role="alert"
-          className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-[#FF1500] px-6 py-4 text-white"
+          className="flex flex-col gap-3 rounded-2xl bg-[#E9230B] p-4 text-white sm:p-5"
         >
-          <div className="min-w-0">
-            <p className="text-[10px] font-medium uppercase tracking-wide">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-wide">
               Masa tunda berakhir
             </p>
-            <p className="text-sm font-medium">
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">
               Beberapa wishlist mu sudah melalui masa tunda, apakah kamu masih
               menginginkannya?
             </p>
           </div>
+
           <button
             type="button"
             onClick={page.showExpired}
-            className="cursor-pointer rounded-full bg-white px-5 py-2.5 text-xs font-medium text-gray-900 transition-colors hover:bg-gray-100"
+            className="w-full rounded-full bg-white py-2.5 text-xs font-semibold text-[#0B3B24] transition hover:bg-emerald-50"
           >
             Lihat Wishlist
           </button>
         </div>
       )}
 
+      {/* Ringkasan saldo tabungan */}
+      <section className="flex min-w-0 flex-col gap-2 rounded-2xl bg-[#0B3B24] p-4 text-white sm:p-5">
+        <p className="text-[10px] font-medium">
+          Saldo Tabungan Wishlist
+        </p>
+
+        <p className="text-2xl font-bold leading-tight sm:text-3xl">
+          {formatRupiah(page.totalSaved)}
+        </p>
+
+        {page.totalShortfall > 0 && (
+          <p className="max-w-sm text-[10px] leading-relaxed text-emerald-100 sm:text-xs">
+            Kamu masih perlu menabung {formatRupiah(page.totalShortfall)} lagi
+            untuk mencapai semua target wishlistmu
+          </p>
+        )}
+      </section>
+
+      {/* Pencarian, filter, sorting */}
       <WishlistToolbar
         query={page.query}
         onQueryChange={page.setQuery}
@@ -78,7 +85,11 @@ const Wishlist = () => {
         onSortChange={page.setSort}
       />
 
-      <WishlistList items={page.visibleItems} isFiltered={page.isFiltered} />
+      {/* Daftar wishlist */}
+      <WishlistList
+        items={page.visibleItems}
+        isFiltered={page.isFiltered}
+      />
 
       <WishlistForm
         open={page.formOpen}
