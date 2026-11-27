@@ -1,4 +1,5 @@
 import { User as UserIcon } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { NAV_ITEMS } from '../../constants/navigation'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
@@ -8,9 +9,10 @@ import { formatToday } from '../../utils/format'
 
 interface Props {
   title: string
+  action?: ReactNode // tombol aksi di kanan judul (mis. "+ Tambah transaksi")
 }
 
-const PageHeader = ({ title }: Props) => {
+const PageHeader = ({ title, action }: Props) => {
   const { pathname } = useLocation()
   const user = useAuthStore((s) => s.user)
   const photoUrl = useProfilePhotoStore((s) =>
@@ -45,7 +47,7 @@ const PageHeader = ({ title }: Props) => {
         </div>
       </div>
 
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs text-gray-500">{formatToday()}</p>
           <h1 className="flex items-center gap-2.5 text-3xl font-semibold text-[#0B3B24]">
@@ -53,9 +55,12 @@ const PageHeader = ({ title }: Props) => {
             {title}
           </h1>
         </div>
-        {/* Desktop saja: bell tetap di kanan seperti sebelumnya */}
-        <div className="hidden md:block">
-          <NotificationBell />
+        <div className="flex shrink-0 items-center gap-3">
+          {action}
+          {/* Desktop saja: bell tetap di kanan seperti sebelumnya */}
+          <div className="hidden md:block">
+            <NotificationBell />
+          </div>
         </div>
       </div>
     </header>

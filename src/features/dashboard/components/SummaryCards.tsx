@@ -1,54 +1,44 @@
-import React from 'react';
-import type { DashboardSummary } from '../../../types/dashboard';
-import { DashboardService } from '../../../services/dashboard.service';
+import type { DashboardSummary } from '../../../types/dashboard'
+import { formatRupiah } from '../../../utils/format'
 
-interface SummaryCardsProps {
-  summary: DashboardSummary;
+interface Props {
+  summary: DashboardSummary
 }
 
-export const SummaryCards: React.FC<SummaryCardsProps> = ({ summary }) => {
-  const formattedBalance = DashboardService.formatRupiah(summary.currentBalance);
-  const formattedDaily = DashboardService.formatRupiah(summary.dailyEstimatedExpense);
-  const formattedSavings = DashboardService.formatRupiah(summary.currentSavings);
-  const formattedTargetRemaining = DashboardService.formatRupiah(summary.savingsTargetRemaining);
-
-  return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-      {/* Saldo Saat Ini Card */}
-      <div className="bg-[#0C2B1E] rounded-3xl p-6 shadow-xl border border-[#16432F] flex flex-col justify-between">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-semibold text-[#8FAEA0]">Saldo saat ini</span>
-          <span className="text-[11px] font-bold text-[#F87171] bg-[#381616] px-3 py-1 rounded-full border border-[#4E1E1E]">
-            -{summary.daysRemaining} hari
-          </span>
-        </div>
-
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-            {formattedBalance}
-          </h2>
-          <p className="text-xs text-[#8FAEA0]">
-            Dengan perkiraan pengeluaran harian :{' '}
-            <span className="font-semibold text-[#C1DFD1]">{formattedDaily}</span>
-          </p>
-        </div>
+const SummaryCards = ({ summary }: Props) => (
+  <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <article className="rounded-3xl bg-white p-6 shadow-sm">
+      <div className="flex min-h-6 items-center justify-between gap-3">
+        <h2 className="text-xs font-medium text-gray-600">Saldo saat ini</h2>
+        <span className="rounded-full bg-red-50 px-3 py-1 text-[11px] font-semibold text-danger">
+          -{summary.daysRemaining} hari
+        </span>
       </div>
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-[#0B3B24]">
+        {formatRupiah(summary.currentBalance)}
+      </p>
+      <p className="mt-2 text-xs text-gray-500">
+        Dengan perkiraan pengeluaran harian :{' '}
+        <span className="font-medium text-[#0F1F17]">
+          {formatRupiah(summary.dailyEstimatedExpense)}
+        </span>
+      </p>
+    </article>
 
-      {/* Tabungan Saat Ini Card */}
-      <div className="bg-[#0C2B1E] rounded-3xl p-6 shadow-xl border border-[#16432F] flex flex-col justify-between">
-        <div className="mb-3">
-          <span className="text-xs font-semibold text-[#8FAEA0]">Tabungan saat ini</span>
-        </div>
-
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-            {formattedSavings}
-          </h2>
-          <p className="text-xs text-[#8FAEA0] leading-relaxed">
-            Anda masih harus menabung {formattedTargetRemaining} lagi untuk mendapatkan semua wishlist anda
-          </p>
-        </div>
+    <article className="rounded-3xl bg-white p-6 shadow-sm">
+      <div className="flex min-h-6 items-center">
+        <h2 className="text-xs font-medium text-gray-600">Tabungan saat ini</h2>
       </div>
-    </section>
-  );
-};
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-[#0B3B24]">
+        {formatRupiah(summary.currentSavings)}
+      </p>
+      <p className="mt-2 text-xs text-gray-500">
+        Anda masih harus menabung{' '}
+        {formatRupiah(summary.savingsTargetRemaining)} lagi untuk mendapatkan
+        semua wishlist anda
+      </p>
+    </article>
+  </section>
+)
+
+export default SummaryCards
