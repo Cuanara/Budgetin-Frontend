@@ -14,6 +14,7 @@ const WishlistInsufficientModal = () => {
     notify,
     toggleNotify,
     confirm,
+    cancel,
   } = useInsufficientBalance()
 
   if (!item) return null
@@ -21,70 +22,63 @@ const WishlistInsufficientModal = () => {
   return (
     <Modal open labelledBy="insufficient-title">
       <div className="flex flex-col items-center text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-          <Coins size={28} />
+        <div className="flex size-14 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+          <Coins size={24} />
         </div>
         <h2
           id="insufficient-title"
-          className="mt-5 text-3xl font-semibold text-[#0F1F17]"
+          className="mt-4 text-2xl font-semibold text-[#0F1F17]"
         >
           Saldo belum cukup
         </h2>
-        <p className="mt-2 text-gray-500">
-          Nabung dulu ya, sebentar lagi kamu sampai.
+        <p className="mt-2 text-xs leading-relaxed text-gray-600">
+          Saldo di tabungan belum cukup untuk mewujudkan wishlistmu ini
         </p>
       </div>
 
-      <div className="mt-6 flex items-center gap-4 rounded-2xl bg-[#F3F8F4] p-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-lg font-medium text-[#0B3B24]">
+      <div className="mt-5 flex items-center gap-3 rounded-2xl bg-[#F3F8F4] p-3">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-sm font-medium text-[#0B3B24]">
           {item.name.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0">
-          <p className="truncate font-medium">{item.name}</p>
-          <p className="text-sm text-gray-500">
-            Harga {formatRupiah(item.price)}
+          <p className="truncate text-sm font-medium">{item.name}</p>
+          <p className="text-[11px] text-gray-600">
+            {formatRupiah(item.price)}
           </p>
         </div>
       </div>
 
-      <div className="relative mt-9">
-        <span
-          className="absolute -top-7 rounded-full bg-[#0F1F17] px-2.5 py-1 text-xs font-medium text-white"
-          style={{
-            left: `${percent}%`,
-            transform: `translateX(-${percent}%)`,
-          }}
-        >
-          {percent}%
-        </span>
-        <div
-          role="progressbar"
-          aria-valuenow={percent}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          className="h-2.5 w-full rounded-full bg-gray-100"
-        >
+      <div className="mt-4">
+        <div className="flex items-center gap-2">
           <div
-            className="h-full rounded-full bg-emerald-500"
-            style={{ width: `${percent}%` }}
-          />
+            role="progressbar"
+            aria-valuenow={percent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            className="h-2 flex-1 rounded-full bg-emerald-100"
+          >
+            <div
+              className="h-full rounded-full bg-[#0B3B24]"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <span className="text-[11px] text-gray-600">{percent}%</span>
         </div>
-        <div className="mt-2 flex justify-between text-sm text-gray-500">
+        <div className="mt-1.5 flex justify-between text-[11px] text-gray-700">
           <span>Saldo {formatRupiah(balance)}</span>
-          <span className="font-medium text-gray-900">
-            Kurang {formatRupiah(shortfall)}
-          </span>
+          <span className="font-medium">Kurang {formatRupiah(shortfall)}</span>
         </div>
       </div>
 
-      <p className="mt-4 rounded-2xl bg-[#F3F8F4] px-4 py-3 text-sm text-gray-700">
-        Saran: sisihkan sekitar Rp {perDay / 1000} rb per hari selama {days} hari.
+      <p className="mt-3 rounded-xl bg-[#F3F8F4] px-4 py-3 text-center text-[11px] text-gray-700">
+        Saran : sisihkan sekitar {formatRupiah(perDay)} per hari selama {days}{' '}
+        hari.
       </p>
 
-      <div className="mt-5 flex items-center justify-between gap-4">
+      <div className="mt-4 flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm font-medium">Kabari aku saat saldo cukup</p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs font-medium">Kabari aku saat saldo cukup</p>
+          <p className="text-[11px] text-gray-600">
             Notifikasi muncul begitu saldomu mencukupi.
           </p>
         </div>
@@ -94,13 +88,13 @@ const WishlistInsufficientModal = () => {
           aria-checked={notify}
           aria-label="Kabari aku saat saldo cukup"
           onClick={toggleNotify}
-          className={`relative h-8 w-14 shrink-0 rounded-full transition-colors ${
-            notify ? 'bg-emerald-500' : 'bg-gray-300'
+          className={`relative h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
+            notify ? 'bg-[#0B3B24]' : 'bg-gray-200'
           }`}
         >
           <span
-            className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow transition-all ${
-              notify ? 'left-7' : 'left-1'
+            className={`absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform ${
+              notify ? 'translate-x-5' : 'translate-x-0'
             }`}
           />
         </button>
@@ -109,9 +103,16 @@ const WishlistInsufficientModal = () => {
       <button
         type="button"
         onClick={confirm}
-        className="mt-5 w-full rounded-full bg-[#0F1F17] py-4 text-base font-medium text-white"
+        className="mt-4 w-full cursor-pointer rounded-full bg-[#0F1F17] py-3.5 text-sm font-medium text-white transition-colors hover:bg-black"
       >
-        Oke, Nabung Dulu !
+        Masukkan wishlist pada tabungan
+      </button>
+      <button
+        type="button"
+        onClick={cancel}
+        className="mt-2 w-full cursor-pointer rounded-full bg-white py-3.5 text-sm font-medium text-gray-900 ring-1 ring-gray-300 transition-colors hover:bg-gray-50"
+      >
+        Batal diwujudkan
       </button>
     </Modal>
   )

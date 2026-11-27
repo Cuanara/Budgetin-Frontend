@@ -10,32 +10,36 @@ const WishlistBalanceCheck = ({ item }: Props) => {
   const ready = isReady(item)
 
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="h-full rounded-2xl bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold text-[#0B3B24]">
-          Cek kecukupan saldo
-        </h3>
+        <h3 className="text-sm font-bold text-[#0B3B24]">Kecukupan saldo</h3>
         <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
-            ready ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700'
+          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
+            ready ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-600'
           }`}
         >
           {ready ? 'Cukup' : 'Belum cukup'}
         </span>
       </div>
 
-      <dl className="mt-4 space-y-2 text-sm">
+      <dl className="mt-3 space-y-1.5 text-[11px]">
         <div className="flex justify-between">
-          <dt className="text-gray-600">Dana terkumpul</dt>
-          <dd className="font-semibold">{formatRupiah(item.saved)}</dd>
+          <dt className="text-gray-700">Dana terkumpul</dt>
+          <dd className="font-medium text-gray-900">
+            {formatRupiah(item.saved)}
+          </dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-gray-600">Harga barang</dt>
-          <dd className="font-semibold">{formatRupiah(item.price)}</dd>
+          <dt className="text-gray-700">Harga barang</dt>
+          <dd className="font-medium text-gray-900">
+            {formatRupiah(item.price)}
+          </dd>
         </div>
-        <div className="flex justify-between border-t border-gray-100 pt-3">
-          <dt className="text-gray-600">Kekurangan</dt>
-          <dd className="font-semibold">{formatRupiah(getShortfall(item))}</dd>
+        <div className="flex justify-between border-t border-gray-100 pt-2">
+          <dt className="text-gray-700">Kekurangan</dt>
+          <dd className="font-semibold text-gray-900">
+            {formatRupiah(getShortfall(item))}
+          </dd>
         </div>
       </dl>
     </section>

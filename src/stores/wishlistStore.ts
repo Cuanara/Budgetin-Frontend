@@ -9,6 +9,8 @@ interface WishlistState {
   insufficientId: string | null
   sufficientId: string | null
   lastArchivedId: string | null
+  fulfillId: string | null // item yang ditanya "Sudah kamu wujudkan?"
+  fulfillReady: boolean // true = langsung tanya (tanpa menunggu user kembali)
   add: (item: WishlistItem) => void
   extend: (id: string) => void
   decide: (id: string, decision: WishlistDecision) => void
@@ -21,6 +23,8 @@ interface WishlistState {
   dismissSufficient: (id: string) => void
   startSaving: (id: string, notify: boolean) => void
   markNotified: (id: string) => void
+  askFulfilled: (id: string, ready: boolean) => void
+  clearFulfill: () => void
 }
 
 const patch = (
@@ -38,6 +42,8 @@ export const useWishlistStore = create<WishlistState>()(
       insufficientId: null,
       sufficientId: null,
       lastArchivedId: null,
+      fulfillId: null,
+      fulfillReady: false,
       add: (item) => set((s) => ({ allItems: [...s.allItems, item] })),
       extend: (id) =>
         set((s) => ({
@@ -50,6 +56,9 @@ export const useWishlistStore = create<WishlistState>()(
       decide: (id, decision) =>
         set((s) => ({
           sufficientId: null,
+          insufficientId: null,
+          fulfillId: null,
+          fulfillReady: false,
           lastArchivedId: decision === 'cancelled' ? id : s.lastArchivedId,
           allItems: patch(s.allItems, id, {
             decision,
@@ -100,6 +109,9 @@ export const useWishlistStore = create<WishlistState>()(
         })),
       markNotified: (id) =>
         set((s) => ({ allItems: patch(s.allItems, id, { notified: true }) })),
+      askFulfilled: (id, ready) =>
+        set({ fulfillId: id, fulfillReady: ready, sufficientId: null }),
+      clearFulfill: () => set({ fulfillId: null, fulfillReady: false }),
     }),
     {
       name: 'wishlist-store',

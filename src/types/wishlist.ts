@@ -1,5 +1,7 @@
 export type WishlistDecision = 'bought' | 'cancelled'
 
+export type WishlistCategory = 'Barang' | 'Non Barang'
+
 export interface WishlistSaving {
   id: string
   amount: number
@@ -12,6 +14,7 @@ export interface WishlistItem {
   price: number
   saved: number // dana yang sudah terkumpul untuk barang ini
   link?: string
+  category?: WishlistCategory
   delayDays: number // total masa tunda
   dayElapsed: number // sudah hari ke berapa
   createdAt?: string // ISO, tanggal wishlist ditambahkan
@@ -26,5 +29,7 @@ export interface WishlistItem {
 export interface WishlistFormValues {
   name: string
   link: string
+  price: number
+  category: WishlistCategory
   delayDays: number
 }
