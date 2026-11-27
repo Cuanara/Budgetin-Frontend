@@ -7,6 +7,9 @@ export const API_PATHS = {
   refresh: '/refresh',
   logout: '/logout',
   me: '/me',
+  budgets: '/budgets',
+  budgetAllocations: '/budgets/allocations',
+  budgetRollover: '/budgets/rollover',
 } as const
 
 // endpoint yang tidak boleh memicu auto-refresh saat 401

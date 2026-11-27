@@ -1,4 +1,4 @@
-
+import Button from '../components/ui/Button'
 import Toast from '../components/ui/Toast'
 import AddCategoryModal from '../features/budget/components/AddCategoryModal'
 import AllocationChart from '../features/budget/components/AllocationChart'
@@ -12,6 +12,9 @@ const Budget = () => {
   const {
     income,
     categories,
+    loading,
+    error,
+    refetch,
     isAddOpen,
     setIsAddOpen,
     categoryToDelete,
@@ -21,6 +24,34 @@ const Budget = () => {
     handleAddCategory,
     handleDeleteCategory,
   } = useBudgetPage()
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-6">
+        <PageHeader title="Budget" />
+        <p className="text-sm text-gray-500">Memuat budget...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col gap-6">
+        <PageHeader title="Budget" />
+        <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+          <p className="mb-4 text-sm text-gray-600">{error}</p>
+          <Button
+            type="button"
+            variant="outline"
+            fullWidth={false}
+            onClick={refetch}
+          >
+            Coba lagi
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-6">

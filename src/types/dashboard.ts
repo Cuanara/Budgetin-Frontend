@@ -17,3 +17,20 @@ export interface DashboardSummary {
   monthlyBudgetPercent: number;
   categories: CategoryExpense[];
 }
+
+export interface MonthlyCategoryAmount {
+  category: string
+  amount: number
+}
+
+export interface MonthlyExpense {
+  month: number // 1-12
+  amount: number
+  categories: MonthlyCategoryAmount[] // kategori terbesar, untuk tooltip
+}
+
+export interface YearlyExpenseReport {
+  year: number
+  budgetLimit: number // total budget setahun (Rp)
+  months: MonthlyExpense[] // selalu 12 bulan
+}

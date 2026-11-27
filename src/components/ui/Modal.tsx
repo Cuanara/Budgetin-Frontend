@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 
@@ -5,10 +6,11 @@ type Size = 'sm' | 'md' | 'lg'
 
 interface Props {
   open: boolean
-  onClose?: () => void // tanpa onClose, popup hanya bisa ditutup lewat tombol di dalamnya
+  onClose?: () => void
   labelledBy?: string
   size?: Size
   children: ReactNode
+  contentClassName?: string
 }
 
 const SIZE_CLASS: Record<Size, string> = {
@@ -17,13 +19,21 @@ const SIZE_CLASS: Record<Size, string> = {
   lg: 'max-w-lg',
 }
 
-const Modal = ({ open, onClose, labelledBy, size = 'lg', children }: Props) => {
+const Modal = ({
+  open,
+  onClose,
+  labelledBy,
+  size = 'lg',
+  children,
+  contentClassName = '',
+}: Props) => {
   useEffect(() => {
     if (!open) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose?.()
     }
+
     const previousOverflow = document.body.style.overflow
 
     document.addEventListener('keydown', handleKeyDown)
@@ -46,7 +56,7 @@ const Modal = ({ open, onClose, labelledBy, size = 'lg', children }: Props) => {
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}
-        className={`m-auto w-full ${SIZE_CLASS[size]} rounded-[28px] bg-white p-8 shadow-xl`}
+        className={`m-auto w-full ${SIZE_CLASS[size]} rounded-[22px] bg-white p-5 shadow-xl ${contentClassName}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

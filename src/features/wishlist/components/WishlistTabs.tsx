@@ -7,19 +7,25 @@ interface Props {
 }
 
 const tabClass = ({ isActive }: { isActive: boolean }) =>
-  `flex items-center gap-2 rounded-full px-5 py-2.5 text-sm transition-colors ${
+  `flex items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] transition-colors sm:px-5 sm:py-2.5 sm:text-xs ${
     isActive
-      ? 'bg-[#0F1F17] font-medium text-white'
-      : 'text-gray-600 hover:bg-emerald-50'
+      ? 'bg-[#0B1720] font-semibold text-white'
+      : 'text-[#52675A] hover:bg-emerald-50'
   }`
 
 const WishlistTabs = ({ activeCount, archivedCount }: Props) => (
-  <nav className="inline-flex rounded-full bg-white p-1.5 shadow-sm">
+  <nav
+    aria-label="Kategori wishlist"
+    className="inline-flex shrink-0 rounded-full bg-white p-1 shadow-sm"
+  >
     <NavLink to="/wishlist" end className={tabClass}>
-      Aktif <strong>{activeCount}</strong>
+      Aktif
+      <strong>{activeCount}</strong>
     </NavLink>
+
     <NavLink to={WISHLIST_ARCHIVE_PATH} end className={tabClass}>
-      Arsip <strong>{archivedCount}</strong>
+      Arsip
+      <strong>{archivedCount}</strong>
     </NavLink>
   </nav>
 )

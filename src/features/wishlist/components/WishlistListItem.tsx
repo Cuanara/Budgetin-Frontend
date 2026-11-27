@@ -9,59 +9,68 @@ interface Props {
 
 const WishlistListItem = ({ item }: Props) => {
   const daysLeft = getDaysLeft(item)
-  const done = daysLeft <= 0 // masa tunda sudah selesai
+  const done = daysLeft <= 0
   const percent = getProgressPercent(item)
-  const badge = done ? 'Masa Tunda Selesai' : `Masa Tunda Sisa ${daysLeft} Hari`
 
-  // hijau tua = masa tunda selesai, abu-abu = masih berjalan
-  const buttonClass = `mt-4 block w-full cursor-pointer rounded-full py-3 text-center text-xs font-semibold text-white shadow-sm transition-colors ${
-    done ? 'bg-[#0B3B24] hover:bg-[#08301d]' : 'bg-[#5F7367] hover:bg-[#53665b]'
+  const badge = done
+    ? 'Masa Tunda Selesai'
+    : `Sisa ${daysLeft} Hari`
+
+  const buttonClass = `mt-3 block w-full rounded-full py-2.5 text-center text-[10px] font-semibold text-white transition-colors sm:text-xs ${
+    done
+      ? 'bg-[#0B3B24] hover:bg-[#08301d]'
+      : 'bg-[#888888] hover:bg-[#737373]'
   }`
 
-  // Selesai tapi dana belum penuh -> pindahkan ke wishlist pada tabungan
   const needsMove = done && percent < 100
 
   return (
-    <li className="rounded-3xl bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between gap-2">
+    <li className="min-w-0 rounded-2xl bg-white p-3.5 shadow-[0_3px_14px_rgba(0,0,0,0.06)] transition hover:shadow-md sm:rounded-3xl sm:p-5">
+      <div className="flex min-w-0 items-center justify-between gap-2">
         <Link
           to={`/wishlist/${item.id}`}
-          className="min-w-0 truncate text-sm font-medium hover:underline"
+          className="min-w-0 truncate text-[11px] font-medium text-[#26382D] hover:underline sm:text-sm"
         >
           {item.name}
         </Link>
-        <span className="shrink-0 rounded-full bg-[#0B3B24] px-2.5 py-1 text-[10px] font-medium text-white">
+
+        <span className="max-w-[115px] shrink-0 truncate rounded-full bg-[#0B3B24] px-2 py-1 text-center text-[8px] font-medium text-white sm:max-w-none sm:px-2.5 sm:text-[10px]">
           {badge}
         </span>
       </div>
 
-      <p className="mt-1 text-xl font-bold">{formatRupiah(item.price)}</p>
+      <p className="mt-1 text-base font-bold leading-tight text-[#101D16] sm:text-xl">
+        {formatRupiah(item.price)}
+      </p>
 
       <div className="mt-3 flex items-center gap-2">
         <div
           role="progressbar"
+          aria-label={`Progress tabungan ${item.name}`}
           aria-valuenow={percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          className="h-1.5 flex-1 rounded-full bg-emerald-100"
+          className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#E5EEE8]"
         >
           <div
-            className="h-full rounded-full bg-[#0B3B24]"
+            className="h-full rounded-full bg-[#0B3B24] transition-all"
             style={{ width: `${percent}%` }}
           />
         </div>
-        <span className="text-[11px] text-gray-500">{percent}%</span>
+
+        <span className="shrink-0 text-[9px] text-[#52675A]">
+          {percent}%
+        </span>
       </div>
 
       {needsMove ? (
-        // TODO: sesuaikan tujuan setelah alur "pindah ke tabungan" ditentukan
         <Link to="/savings" className={buttonClass}>
           Pindahkan Ke Wishlist Pada Tabungan
         </Link>
       ) : item.link ? (
         <button
           type="button"
-          onClick={() => window.open(item.link, '_blank', 'noopener')}
+          onClick={() => window.open(item.link, '_blank', 'noopener,noreferrer')}
           className={buttonClass}
         >
           Buka Link Pembelian

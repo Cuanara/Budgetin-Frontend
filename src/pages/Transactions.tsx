@@ -18,51 +18,61 @@ const Transactions = () => {
   const history = useTransactionHistory()
 
   return (
-    <div className="space-y-5">
+    <div className="w-full min-w-0 space-y-4 sm:space-y-5">
       <PageHeader title="Riwayat Transaksi" />
 
-      <div className="flex items-center gap-3">
-        <div className="flex w-full max-w-xs overflow-hidden rounded-lg border border-gray-200 bg-white">
+      {/* Search dan Filter */}
+      <div className="flex w-full min-w-0 items-center gap-2">
+        <div className="flex h-10 min-w-0 flex-1 overflow-hidden rounded-xl bg-white shadow-sm">
           <input
             type="search"
             aria-label="Cari riwayat"
             placeholder="Cari riwayat..."
             value={history.query}
             onChange={(e) => history.setQuery(e.target.value)}
-            className="min-w-0 flex-1 px-3 text-xs outline-none"
+            className="min-w-0 flex-1 bg-transparent px-3 text-xs text-[#173D2B] outline-none placeholder:text-gray-400 sm:px-4"
           />
-          <span aria-hidden="true" className="grid size-9 place-items-center bg-[#0B3B24] text-white">
-            <Search size={14} />
-          </span>
+
+          <div className="grid w-11 shrink-0 place-items-center bg-[#0B3B24] text-white">
+            <Search size={16} />
+          </div>
         </div>
+
         <button
           type="button"
-          aria-label="Filter"
+          aria-label="Filter transaksi"
           onClick={history.openFilter}
-          className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg border border-gray-300 bg-white"
+          className="relative grid size-10 shrink-0 place-items-center rounded-xl border border-[#D7E8DD] bg-white text-[#0B3B24] shadow-sm transition hover:bg-[#F3F8F4]"
         >
-          <SlidersHorizontal size={16} />
+          <SlidersHorizontal size={17} />
+
+          <span className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full border border-white bg-red-500" />
         </button>
       </div>
 
-      <section className="rounded-3xl bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-base font-medium">Riwayat transaksi</h2>
-          <span className="rounded-full bg-[#F3F8F4] px-3 py-1 text-[11px] text-gray-600">
+      {/* Daftar Transaksi */}
+      <section className="w-full min-w-0 overflow-hidden rounded-2xl bg-white p-3 shadow-sm sm:rounded-3xl sm:p-5">
+
+        {/* Jumlah Transaksi */}
+        <div className="flex min-w-0 items-center">
+          <span className="max-w-full truncate rounded-full bg-[#E8F4EC] px-2.5 py-1 text-[10px] font-medium text-[#286344]">
             {history.rows.length} transaksi
             {history.activeCategory && ` · ${history.activeCategory}`}
           </span>
         </div>
 
-        <div className="mt-4 inline-flex rounded-full bg-[#F3F8F4] p-1">
+        {/* Tab Transaksi */}
+        <div className="mt-3 flex w-full rounded-full bg-[#F0F6F1] p-1">
           {TABS.map((tab) => (
             <button
               key={tab.value}
               type="button"
               aria-pressed={history.tab === tab.value}
               onClick={() => history.setTab(tab.value)}
-              className={`cursor-pointer rounded-full px-4 py-2 text-xs font-medium ${
-                history.tab === tab.value ? 'bg-[#0B3B24] text-white' : 'text-gray-700'
+              className={`min-w-0 flex-1 cursor-pointer rounded-full px-1 py-2 text-[9px] font-medium transition sm:px-3 sm:text-xs ${
+                history.tab === tab.value
+                  ? 'bg-[#0B3B24] text-white shadow-sm'
+                  : 'text-[#52675A] hover:bg-white'
               }`}
             >
               {tab.label}
@@ -70,9 +80,14 @@ const Transactions = () => {
           ))}
         </div>
 
-        <TransactionTable rows={history.rows} onSelect={history.selectTransaction} />
+        {/* List Transaksi */}
+        <TransactionTable
+          rows={history.rows}
+          onSelect={history.selectTransaction}
+        />
       </section>
 
+      {/* Modal Filter */}
       <TransactionFilterModal
         open={history.isFilterOpen}
         draft={history.draft}
@@ -82,6 +97,8 @@ const Transactions = () => {
         onReset={history.resetFilter}
         onClose={history.closeFilter}
       />
+
+      {/* Detail Transaksi */}
       <TransactionDetailDrawer
         transaction={history.selected}
         confirmDelete={history.confirmDelete}

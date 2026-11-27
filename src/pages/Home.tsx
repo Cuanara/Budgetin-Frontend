@@ -1,52 +1,53 @@
-﻿import React from 'react';
-import { Navbar } from '../components/Navbar';
-import { Toast } from '../components/Toast';
-import { SummaryCards } from '../features/dashboard/components/SummaryCards';
-import { ExpenseBarChart } from '../features/dashboard/components/ExpenseBarChart';
-import { ExpenseGaugeCard } from '../features/dashboard/components/ExpenseGaugeCard';
-import { RecentTransactions } from '../features/dashboard/components/RecentTransactions';
-import { TransactionModal } from '../features/transactions/components/TransactionModal';
-import { useDashboard } from '../hooks/useDashboard';
+import { Plus } from 'lucide-react'
+import PageHeader from '../components/layout/PageHeader'
+import Toast from '../components/ui/Toast'
+import MonthlyGaugeCard from '../features/dashboard/components/MonthlyGaugeCard'
+import RecentTransactions from '../features/dashboard/components/RecentTransactions'
+import SummaryCards from '../features/dashboard/components/SummaryCards'
+import YearlyExpenseChart from '../features/dashboard/components/YearlyExpenseChart'
+import { useDashboardPage } from '../features/dashboard/hooks/useDashboardPage'
+import { TransactionModal } from '../features/transactions/components/TransactionModal'
 
-const Home: React.FC = () => {
+const Home = () => {
   const {
     summary,
     transactions,
+    yearlyReports,
     isTransactionModalOpen,
     toastMessage,
     openTransactionModal,
     closeTransactionModal,
     clearToast,
-  } = useDashboard();
+  } = useDashboardPage()
 
   return (
-    <div className="min-h-screen bg-[#071C13] p-6 lg:p-8">
-      <Navbar
-        title="Dashboard"
-        dateText={new Date().toLocaleDateString('id-ID', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        })}
-        showAddButton={true}
-        onOpenAddModal={openTransactionModal}
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:gap-6">
+      <PageHeader
+        title="Beranda"
+        action={
+          <button
+            type="button"
+            onClick={openTransactionModal}
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-white transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto"
+          >
+            <Plus className="size-4" aria-hidden="true" />
+            Tambah transaksi
+          </button>
+        }
       />
 
       <SummaryCards summary={summary} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ExpenseBarChart summary={summary} />
+          <YearlyExpenseChart reports={yearlyReports} />
         </div>
 
-        <div className="bg-[#0C2B1E] rounded-3xl p-6 shadow-xl border border-[#16432F] flex flex-col justify-between">
-          <ExpenseGaugeCard summary={summary} />
-          <RecentTransactions
-            transactions={transactions}
-            onOpenAllTransactions={openTransactionModal}
-          />
-        </div>
+        <aside className="flex flex-col justify-between gap-6 rounded-3xl bg-white p-4 shadow-sm sm:p-6">
+          <MonthlyGaugeCard summary={summary} />
+          <div className="h-px bg-gray-100" />
+          <RecentTransactions transactions={transactions} />
+        </aside>
       </div>
 
       <TransactionModal
@@ -54,9 +55,9 @@ const Home: React.FC = () => {
         onClose={closeTransactionModal}
       />
 
-      <Toast message={toastMessage} onClear={clearToast} />
+      {toastMessage && <Toast message={toastMessage} onClose={clearToast} />}
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

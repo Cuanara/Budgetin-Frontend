@@ -29,13 +29,16 @@ export const validateAddCategory = (
     errors.percent = 'Isi angka 1 sampai 100.'
   }
 
-  const donor = categories.find((c) => c.id === values.takeFromId)
-  if (!values.takeFromId) {
-    errors.takeFromId = 'Pilih kategori yang jatahnya dikurangi.'
-  } else if (!donor) {
-    errors.takeFromId = 'Kategori tidak ditemukan.'
-  } else if (!errors.percent && donor.percent < percent) {
-    errors.takeFromId = `Jatah ${donor.name} hanya ${donor.percent}%.`
+  // backend: begitu sudah ada alokasi, sumber wajib dan seluruh jatah baru dipotong darinya
+  if (categories.length > 0) {
+    const donor = categories.find((c) => c.id === values.takeFromId)
+    if (!values.takeFromId) {
+      errors.takeFromId = 'Pilih kategori yang jatahnya dikurangi.'
+    } else if (!donor) {
+      errors.takeFromId = 'Kategori tidak ditemukan.'
+    } else if (!errors.percent && donor.percent < percent) {
+      errors.takeFromId = `Jatah ${donor.name} hanya ${donor.percent}%.`
+    }
   }
 
   return errors
