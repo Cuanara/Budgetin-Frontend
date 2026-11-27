@@ -1,6 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
 import WishlistArchiveConfirmModal from '../features/wishlist/components/WishlistArchiveConfirmModal'
 import WishlistBalanceCheck from '../features/wishlist/components/WishlistBalanceCheck'
@@ -8,21 +7,10 @@ import WishlistDelayCard from '../features/wishlist/components/WishlistDelayCard
 import WishlistDetailHistory from '../features/wishlist/components/WishlistDetailHistory'
 import WishlistDetailSummary from '../features/wishlist/components/WishlistDetailSummary'
 import { useWishlistDetail } from '../features/wishlist/hooks/useWishlistDetail'
-import { useWishlistStore } from '../stores/wishlistStore'
 
 const WishlistDetail = () => {
-  const { item } = useWishlistDetail()
-  const navigate = useNavigate()
-  const decide = useWishlistStore((s) => s.decide)
-  const [confirmOpen, setConfirmOpen] = useState(false)
-
-  const handleArchive = () => {
-    if (!item) return
-    setConfirmOpen(false)
-    // TODO: PATCH ke BE
-    decide(item.id, 'cancelled')
-    navigate('/wishlist')
-  }
+  const { item, confirmOpen, openConfirm, closeConfirm, archive } =
+    useWishlistDetail()
 
   return (
     <div className="flex flex-col gap-5">
@@ -39,7 +27,7 @@ const WishlistDetail = () => {
         {item && (
           <button
             type="button"
-            onClick={() => setConfirmOpen(true)}
+            onClick={openConfirm}
             className="cursor-pointer rounded-full bg-[#0F1F17] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-black"
           >
             Arsipkan Wishlist Ini
@@ -66,8 +54,8 @@ const WishlistDetail = () => {
 
       <WishlistArchiveConfirmModal
         open={confirmOpen}
-        onCancel={() => setConfirmOpen(false)}
-        onConfirm={handleArchive}
+        onCancel={closeConfirm}
+        onConfirm={archive}
       />
     </div>
   )
