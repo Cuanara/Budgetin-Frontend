@@ -2,7 +2,11 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import type { PointerEvent } from 'react'
 import type { BudgetCategory } from '../../../types/budget'
-import { amountFromPercent, formatRupiahShort } from '../../../utils/budget'
+import {
+  amountFromPercent,
+  formatRupiahShort,
+  getAvailablePercent,
+} from '../../../utils/budget'
 import { formatRupiah } from '../../../utils/format'
 
 interface Props {
@@ -34,6 +38,7 @@ const AllocationChart = ({ income, categories, className }: Props) => {
   }))
 
   const activeCategory = categories.find((c) => c.id === activeId)
+  const availablePercent = getAvailablePercent(categories)
 
   const handleSegmentMove = (
     event: PointerEvent<SVGCircleElement>,
@@ -148,6 +153,21 @@ const AllocationChart = ({ income, categories, className }: Props) => {
               <span className="font-medium text-[#0F1F17]">{c.percent}%</span>
             </li>
           ))}
+
+          {availablePercent > 0 && (
+            <li className="flex items-center justify-between rounded-lg px-2 py-1 text-xs">
+              <span className="flex items-center gap-2 text-gray-600">
+                <span
+                  className="h-2 w-2 rounded-full bg-[#eef5f1] ring-1 ring-gray-300"
+                  aria-hidden="true"
+                />
+                Belum dialokasikan
+              </span>
+              <span className="font-medium text-[#0F1F17]">
+                {availablePercent}%
+              </span>
+            </li>
+          )}
         </ul>
       </section>
     </div>

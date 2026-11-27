@@ -2,6 +2,8 @@ import { CATEGORY_COLORS } from '../constants/budget'
 import type {
   AddCategoryInput,
   BudgetCategory,
+  BudgetResponse,
+  BudgetState,
   TakeFromOption,
 } from '../types/budget'
 
@@ -105,3 +107,18 @@ export const removeCategory = (
     c.id === receiver.id ? { ...c, percent: c.percent + target.percent } : c,
   )
 }
+/** Ubah response API menjadi model yang dipakai UI. */
+export const mapBudgetToState = (budget: BudgetResponse): BudgetState => ({
+  income: budget.total_income,
+  categories: budget.allocations.map((a, index) => ({
+    id: a.id,
+    name: a.name ?? 'Tanpa nama',
+    percent: a.percentage,
+    spent: a.spent_amount,
+    color: CATEGORY_COLORS[index % CATEGORY_COLORS.length],
+  })),
+})
+
+/** Sisa jatah yang belum dialokasikan (0-100). */
+export const getAvailablePercent = (categories: BudgetCategory[]): number =>
+  Math.max(0, Math.round((100 - getTotalPercent(categories)) * 100) / 100)

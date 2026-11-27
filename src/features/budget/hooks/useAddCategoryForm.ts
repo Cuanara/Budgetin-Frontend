@@ -15,7 +15,7 @@ import { validateAddCategory } from '../schemas/category.schema'
 interface Params {
   categories: BudgetCategory[]
   income: number
-  onSubmit: (input: AddCategoryInput) => boolean
+  onSubmit: (input: AddCategoryInput) => boolean | Promise<boolean>
   onClose: () => void
 }
 
@@ -31,8 +31,9 @@ export const useAddCategoryForm = ({
   onSubmit,
   onClose,
 }: Params) => {
-  const [values, setValues] = useState(INITIAL_VALUES)
+  const [values, setValues] = useState<AddCategoryFormValues>(INITIAL_VALUES)
   const [errors, setErrors] = useState<AddCategoryFormErrors>({})
+  const [submitting, setSubmitting] = useState(false)
 
   const percentValue = Number(values.percent) || 0
 
@@ -43,7 +44,7 @@ export const useAddCategoryForm = ({
 
   const donor = options.find((o) => o.id === values.takeFromId)
 
-    const preview = {
+  const preview = {
     donor,
     donorAmountBefore: donor
       ? amountFromPercent(income, donor.currentPercent)
@@ -52,7 +53,7 @@ export const useAddCategoryForm = ({
     total: getTotalPercent(categories),
     canPreview: Boolean(donor?.isEnabled) && percentValue > 0,
   }
-  
+
   const setName = (name: string) => {
     setValues((v) => ({ ...v, name }))
     setErrors((e) => ({ ...e, name: undefined }))
@@ -70,18 +71,25 @@ export const useAddCategoryForm = ({
     setErrors((e) => ({ ...e, takeFromId: undefined }))
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
+    if (submitting) return // cegah klik ganda -> POST dobel
+
     const nextErrors = validateAddCategory(values, categories)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
 
-    const saved = onSubmit({
-      name: values.name,
-      percent: Number(values.percent),
-      takeFromId: values.takeFromId,
-    })
-    if (saved) onClose()
+    setSubmitting(true)
+    try {
+      const saved = await onSubmit({
+        name: values.name,
+        percent: Number(values.percent),
+        takeFromId: values.takeFromId,
+      })
+      if (saved) onClose()
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return {
@@ -90,6 +98,7 @@ export const useAddCategoryForm = ({
     options,
     percentValue,
     preview,
+    submitting,
     setName,
     setPercent,
     setTakeFromId,
