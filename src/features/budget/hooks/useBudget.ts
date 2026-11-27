@@ -23,43 +23,90 @@ export const useBudget = () => {
 
   const apply = useCallback((budget: BudgetResponse) => {
     setState(mapBudgetToState(budget))
-    setPeriod({ month: budget.month, year: budget.year })
+    setPeriod({
+      month: budget.month,
+      year: budget.year,
+    })
   }, [])
 
+  // Fetching untuk pertama kali.
+  // State diperbarui setelah request API selesai.
+  useEffect(() => {
+    const controller = new AbortController()
+    let active = true
+
+    const fetchInitialBudget = async () => {
+      try {
+        const budget = await budgetService.getBudget(controller.signal)
+
+        if (!active) return
+
+        apply(budget)
+        setError(null)
+        setLoading(false)
+      } catch (err) {
+        if (!active) return
+
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+
+        setError(
+          err instanceof ApiError ? err.message : 'Gagal memuat budget',
+        )
+        setLoading(false)
+      }
+    }
+
+    void fetchInitialBudget()
+
+    return () => {
+      active = false
+      controller.abort()
+    }
+  }, [apply])
+
+  // Refetch manual.
   const load = useCallback(
     async (signal?: AbortSignal) => {
       setLoading(true)
       setError(null)
+
       try {
-        apply(await budgetService.getBudget(signal))
+        const budget = await budgetService.getBudget(signal)
+        apply(budget)
         setLoading(false)
       } catch (err) {
-        // request dibatalkan (unmount / StrictMode): jangan ubah state apa pun
-        if (err instanceof DOMException && err.name === 'AbortError') return
-        setError(err instanceof ApiError ? err.message : 'Gagal memuat budget')
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+
+        setError(
+          err instanceof ApiError ? err.message : 'Gagal memuat budget',
+        )
         setLoading(false)
       }
     },
     [apply],
   )
 
-  useEffect(() => {
-    const controller = new AbortController()
-    void load(controller.signal)
-    return () => controller.abort()
+  const refetch = useCallback(() => {
+    void load()
   }, [load])
 
-  // muat ulang diam-diam setelah tambah/hapus (tanpa layar "Memuat...")
+  // Muat ulang diam-diam setelah tambah/hapus.
   const refresh = useCallback(async () => {
     try {
-      apply(await budgetService.getBudget())
+      const budget = await budgetService.getBudget()
+      apply(budget)
     } catch {
-      /* data lama tetap tampil */
+      // Data lama tetap ditampilkan jika refresh gagal.
     }
   }, [apply])
 
   const currentPeriod = useCallback((): Period => {
     const now = new Date()
+
     return {
       month: period?.month ?? now.getMonth() + 1,
       year: period?.year ?? now.getFullYear(),
@@ -72,8 +119,11 @@ export const useBudget = () => {
         ...currentPeriod(),
         name: input.name.trim(),
         percentage: input.percent,
-        ...(input.takeFromId ? { source_allocation_id: input.takeFromId } : {}),
+        ...(input.takeFromId
+          ? { source_allocation_id: input.takeFromId }
+          : {}),
       })
+
       await refresh()
     },
     [currentPeriod, refresh],
@@ -87,7 +137,7 @@ export const useBudget = () => {
     [refresh],
   )
 
-  // hitung ulang nominal alokasi dari pemasukan (belum dipakai di layar)
+  // Menghitung ulang nominal alokasi dari pemasukan.
   const recalculate = useCallback(async () => {
     await budgetService.processRollover(currentPeriod())
     await refresh()
@@ -98,7 +148,7 @@ export const useBudget = () => {
     categories: state.categories,
     loading,
     error,
-    refetch: () => load(),
+    refetch,
     addCategory,
     removeCategory,
     recalculate,
